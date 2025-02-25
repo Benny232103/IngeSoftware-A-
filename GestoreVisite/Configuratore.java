@@ -1,3 +1,4 @@
+import java.util.*;
 class Configuratore {
     private String username;
     private String password;

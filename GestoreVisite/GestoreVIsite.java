@@ -1,3 +1,4 @@
+import java.util.*;
 class GestoreVisite {
     private List<Luogo> luoghi;
     private Set<String> dateNonDisponibili;

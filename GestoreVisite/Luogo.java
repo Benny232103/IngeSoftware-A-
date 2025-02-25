@@ -1,3 +1,4 @@
+import java.util.*;
 class Luogo {
     private String nome;
     private List<String> tipiVisita;
