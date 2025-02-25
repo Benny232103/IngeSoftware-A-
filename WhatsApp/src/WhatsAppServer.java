@@ -24,5 +24,6 @@ public class WhatsAppServer {
 			ex.printStackTrace();
 		}
 	}
+	ciao
 	
 }
