@@ -1,0 +1,29 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "GestoreMain",
+            "request": "launch",
+            "mainClass": "gestoreVisite.it.unibs.ingesw.gestvisit.GestoreMain",
+            "projectName": "IngeSoftware-A-_5aa1a8de"
+        },
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Run gestoreMain",
+            "request": "launch",
+            "mainClass": "it.unibs.ingesw.gestvisit.GestoreMain",
+            "projectName": "IngeSoftware-A-",
+            "args": ""
+        }
+    ]
+}

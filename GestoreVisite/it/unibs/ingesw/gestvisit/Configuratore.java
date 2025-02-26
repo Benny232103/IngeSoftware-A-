@@ -1,4 +1,4 @@
-import java.util.*;
+package gestoreVisite.it.unibs.ingesw.gestvisit;
 import it.unibs.fp.mylib.*;
 class Configuratore {
    

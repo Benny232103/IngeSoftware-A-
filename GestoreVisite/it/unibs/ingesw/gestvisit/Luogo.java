@@ -1,3 +1,4 @@
+package gestoreVisite.it.unibs.ingesw.gestvisit;
 import java.util.*;
 class Luogo {
     private String nome;
