@@ -7,4 +7,5 @@
         "GestoreVisite/it/unibs/ingesw/gestvisit",
         ""
     ],
+    "java.dependency.packagePresentation": "hierarchical",
 }

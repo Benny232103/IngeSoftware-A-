@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "GestoreMain",
+            "request": "launch",
+            "mainClass": "src.it.unibs.ingsw.gestvisit.GestoreMain",
+            "projectName": "IngeSoftware-A-_5aa1a8de"
+        },
+        {
+            "type": "java",
             "name": "Run GestoreMain",
             "request": "launch",
             "mainClass": "it.unibs.ingesw.gestvisit.GestoreMain",
@@ -17,6 +24,6 @@
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"
-        },
+        }
     ]
 }
