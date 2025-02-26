@@ -1,4 +1,5 @@
 import java.util.*;
+import it.unibs.fp.mylib.*;
 class Configuratore {
    
         private String username;

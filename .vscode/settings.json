@@ -1,0 +1,10 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Users\\Ruggero Lombardi\\Desktop\\UniBSFpLib.jar"
+    ],
+    "java.project.sourcePaths": [
+        "GestoreVisite/it/unibs/ingesw/gestvisit",
+        ""
+    ],
+}
