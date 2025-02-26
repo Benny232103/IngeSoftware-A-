@@ -1,4 +1,4 @@
-package gestoreVisite.it.unibs.ingesw.gestvisit;
+package GestoreVisite.it.unibs.ingesw.gestvisit;
 import it.unibs.fp.mylib.*;
 class Configuratore {
    
