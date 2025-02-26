@@ -4,7 +4,7 @@ public class GestoreMain {
     public static void main(String[] args) {
         
         Configuratore config = new Configuratore("admin", "password123");
-        GestoreVisite gestore = new GestoreVisite();
+        GestVisite gestore = new GestVisite();
         System.out.println("buongiorno, per poter accedere inserire");
         Configuratore configuratoreUtente = Configuratore.creaConfiguratore(); 
             
