@@ -1,0 +1,4 @@
+Configuratore:UserName: config1
+password: pass1
+Volontario:UserName: volontario1
+password: pass2

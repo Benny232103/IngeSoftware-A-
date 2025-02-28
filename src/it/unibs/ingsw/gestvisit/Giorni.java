@@ -2,7 +2,7 @@ package src.it.unibs.ingsw.gestvisit;
 import java.util.*;
 
 class GestVisite {
-    static final int NUMERO_MAX_PERSONE_PER_VISITA = 20;
+    static final int NUMERO_MAX_PERSONE_PER_VISITA = 20;    
     private String titolo;
     private String descrizioneVisita;
     private String luogoIncontro;
@@ -11,6 +11,9 @@ class GestVisite {
     private int ora;
     private int durataMinuti;
     private String descrizioneBiglietto;
+    private List<Luogo> luoghi;
+    private Set<String> dateNonDisponibili;
+    private int maxPersonePerVisita;
 
     public enum Giorni {
         LUNEDI, MARTEDI, MERCOLEDI, GIOVEDI, VENERDI, SABATO, DOMENICA;
@@ -18,17 +21,17 @@ class GestVisite {
 
 
     public GestVisite() {
-        this.luoghi = new ();
+        this.luoghi = new ArrayList<>();
         this.dateNonDisponibili = new HashSet<>();
         this.maxPersonePerVisita = 10; // valore di default
     }
 
     public void setGiornateSettimanali(Set<Giorni> giornate) {
-        this.giornateSettimanali = giornate;
+        this.giornataSettimanale = giornate;
     }
 
     public Set<Giorni> getGiornateSettimanali() {
-        return giornateSettimanali;
+        return giornataSettimanale;
     }
 
     public void aggiungiLuogo(String nome) {
@@ -43,7 +46,6 @@ class GestVisite {
         dateNonDisponibili.add(data);
     }
 
- 
     public void mostraLuoghi() {
         for (Luogo l : luoghi) {
             System.out.println(l);
