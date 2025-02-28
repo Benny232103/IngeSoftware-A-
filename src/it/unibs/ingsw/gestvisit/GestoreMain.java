@@ -17,8 +17,6 @@ public class GestoreMain {
         HashMap<String, List<String>> tipiVisita = new HashMap<String, List<String>>();
         HashMap<String, List<String>> volontari = new HashMap<String, List<String>>();
 
-        
-        Configuratore config = new Configuratore("admin", "password123");
         GestVisite gestore = new GestVisite();
         System.out.println("buongiorno, per poter accedere inserire");
         Configuratore configuratore = (Configuratore) Utente.creaUtente();
