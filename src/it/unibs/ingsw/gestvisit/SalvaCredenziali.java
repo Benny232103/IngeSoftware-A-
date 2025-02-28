@@ -36,6 +36,10 @@ public class SalvaCredenziali {
         try (Scanner scanner = new Scanner(file)) {
             while (scanner.hasNextLine()) {
                 String[] credenziali = scanner.nextLine().split(":");
+                if (credenziali.length != 3) {
+                    System.out.println("Formato credenziali non valido: " + String.join(":", credenziali));
+                    continue;
+                }
                 String tipoUtente = credenziali[0];
                 String nomeUtente = credenziali[1];
                 String password = credenziali[2];
@@ -44,17 +48,16 @@ public class SalvaCredenziali {
                     case "Configuratore":
                         utenti.add(new Configuratore(nomeUtente, password));
                         break;
-                     
                     case "Volontario":
                         utenti.add(new Volontario(nomeUtente, password));
                         break;
-                    /*
+                    /* 
                     case "UtentePubblico":
                         utenti.add(new UtentePubblico(nomeUtente, password));
                         break;
                     */
                     default:
-                        System.out.println("Tipo utente non riconosciuto.");
+                        System.out.println("Tipo utente non riconosciuto: " + tipoUtente);
                         break;
                 }
             }
