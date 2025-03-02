@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class SalvaCredenziali {
+public class CredentialManager {
     private List<Utente> utenti = new ArrayList<>();
+    public List<Volontario> volontari = new ArrayList<>();
+    public List<Configuratore> configuratori = new ArrayList<>();
 
     public void aggiungiUtente(Utente utente) {
         utenti.add(utente);
@@ -20,8 +22,18 @@ public class SalvaCredenziali {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, false))) {
             for (Utente utente : utenti) {
-                writer.write(utente.getClass().getSimpleName() + ":" + utente.toString());
-                writer.newLine();
+                String tipoUtente = "";
+                if (utente instanceof Configuratore) {
+                    tipoUtente = "Configuratore";
+                    Configuratore config = (Configuratore) utente;
+                    writer.write(tipoUtente + ":" + config.getNomeUtente() + ":" + config.getPassword() + ":" + config.getEmail());
+                } else if (utente instanceof Volontario) {
+                    tipoUtente = "Volontario";
+                    Volontario vol = (Volontario) utente;
+                    writer.write(tipoUtente + ":" + vol.getNomeUtente() + ":" + vol.getPassword() + ":" + vol.getEmail());
+                } else {
+                    tipoUtente = "UtentePubblico";
+                }
             }
             System.out.println("Credenziali salvate.");
         } catch (IOException e) {
@@ -29,7 +41,6 @@ public class SalvaCredenziali {
             e.printStackTrace();
         }
     }
-
     public void caricaCredenziali() {
         File file = new File("credenziali.txt");
 
@@ -41,21 +52,24 @@ public class SalvaCredenziali {
                     continue;
                 }
                 String tipoUtente = credenziali[0];
-                String nomeUtente = credenziali[1];
-                String password = credenziali[2];
-
+                String nome = credenziali[1];
+                String cognome = credenziali[2];
+                String nomeUtente = credenziali[3];
+                String password = credenziali[4];
+                String email = credenziali[5];
                 switch (tipoUtente) {
                     case "Configuratore":
-                        utenti.add(new Configuratore(nomeUtente, password));
+                        configuratori.add(new Configuratore(nome, cognome, email, nomeUtente, password));
                         break;
                     case "Volontario":
-                        utenti.add(new Volontario(nomeUtente, password));
+                        volontari.add(new Volontario(nome, cognome, email, nomeUtente, password));
                         break;
-                    /* 
+                    /*  
                     case "UtentePubblico":
                         utenti.add(new UtentePubblico(nomeUtente, password));
                         break;
                     */
+                    
                     default:
                         System.out.println("Tipo utente non riconosciuto: " + tipoUtente);
                         break;
@@ -67,4 +81,5 @@ public class SalvaCredenziali {
             e.printStackTrace();
         }
     }
+    
 }

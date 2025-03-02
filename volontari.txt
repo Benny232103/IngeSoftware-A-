@@ -1,0 +1,2 @@
+Mario,Rossi,mario.rossi@gmail.com,mario.rossi@gmail.com,pass12
+Luigi,Bianchi,luigi.bianchi@gmail.com,luigi.bianchi@gmail.com, pass123

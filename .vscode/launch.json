@@ -4,6 +4,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "MainVisite",
+            "request": "launch",
+            "mainClass": "src.it.unibs.ingsw.gestvisit.MainVisite",
+            "projectName": "IngeSoftware-A-_5aa1a8de"
+        },
+        {
+            "type": "java",
             "name": "SalvaCredenziali",
             "request": "launch",
             "mainClass": "src.it.unibs.ingsw.gestvisit.SalvaCredenziali",

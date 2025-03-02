@@ -3,42 +3,32 @@ package src.it.unibs.ingsw.gestvisit;
 import it.unibs.fp.libjava.InputDati;
 
 public class Utente {
-    private String nomeUtente;
-    private String password;
+    private String nome;
+    private String cognome;
 
     public Utente(String nomeUtente, String password) {
-        this.nomeUtente = nomeUtente;
-        this.password = password;
+        this.nome = nome;
+        this.cognome = cognome; // assuming password should not be assigned to cognome
     }
 
-    public String getNomeUtente() {
-        return nomeUtente;
+    public void setNome(String nome) {
+        this.nome = nome; // changed method to set the nome
     }
 
-    public void setNomeUtente(String nomeUtente) {
-        this.nomeUtente = nomeUtente;
+    public void setCognome(String cognome) {
+        this.cognome = cognome; // added method to set the cognome
     }
 
-    public String getPassword() {
-        return password;
+    public String getNome() {
+        return nome;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public String getCognome() {
+        return cognome;
     }
 
     @Override
     public String toString() {
-        return "UserName: " + nomeUtente + "\npassword: " + password;
-    }
-
-    public boolean verificaPassword(String password) {
-        return this.password.equals(password);
-    }
-
-    public static Utente creaUtente(){
-        String nomeUtente = InputDati.leggiStringaNonVuota("inserire il nome utente: ");
-        String password = InputDati.leggiStringaNonVuota("inserire la password: ");
-        return new Utente(nomeUtente, password);
+        return nome + " " + cognome;
     }
 }
