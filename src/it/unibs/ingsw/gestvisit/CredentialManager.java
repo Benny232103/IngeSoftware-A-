@@ -15,14 +15,15 @@ import it.unibs.fp.libjava.InputDati;
 public class CredentialManager {
     private List<Utente> utenti = new ArrayList<>();
     public List<Volontario> volontari = new ArrayList<>();
-    private static final String CREDENZIALI_FILE_PATH = "src/it/unibs/ingsw/gestvisit/credenzialiConfiguratori.txt";
+    private static final String CREDENZIALI_FILE_PATH_CONFIGURATORI = "src/it/unibs/ingsw/gestvisit/credenzialiConfiguratori.txt";
+    private static final String CREDENZIALI_FILE_PATH_GENERALS = "src/it/unibs/ingsw/gestvisit/credenziali.txt";
 
     public void aggiungiUtente(Utente utente) {
         utenti.add(utente);
     }
 
     public void salvaCredenziali() {
-        File file = new File("credenziali.txt");
+        File file = new File(CREDENZIALI_FILE_PATH_GENERALS);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, false))) {
             for (Utente utente : utenti) {
@@ -47,7 +48,7 @@ public class CredentialManager {
     }
 
     public void caricaCredenziali() {
-        File file = new File("credenziali.txt");
+        File file = new File(CREDENZIALI_FILE_PATH_GENERALS);
 
         try (Scanner scanner = new Scanner(file)) {
             while (scanner.hasNextLine()) {
@@ -84,10 +85,10 @@ public class CredentialManager {
     }
 
     public void caricaCredenzialiConfiguratore(List<Configuratore> configuratori) {
-        File file = new File(CREDENZIALI_FILE_PATH);
+        File file = new File(CREDENZIALI_FILE_PATH_CONFIGURATORI);
 
         if (!file.exists()) {
-            System.out.println("File " + CREDENZIALI_FILE_PATH + " non trovato.");
+            System.out.println("File " + CREDENZIALI_FILE_PATH_CONFIGURATORI + " non trovato.");
             System.out.println("Percorso assoluto: " + file.getAbsolutePath());
             return;
         }
@@ -119,7 +120,7 @@ public class CredentialManager {
         configuratore.setEmail(newNomeUtente);
         configuratore.setPassword(newPassword);
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CREDENZIALI_FILE_PATH, false))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CREDENZIALI_FILE_PATH_CONFIGURATORI, false))) {
             writer.write("Configuratore," + configuratore.getNome() + "," + configuratore.getCognome() + "," + configuratore.getEmail() + "," + configuratore.getPassword());
             writer.newLine();
             System.out.println("Nuove credenziali salvate.");

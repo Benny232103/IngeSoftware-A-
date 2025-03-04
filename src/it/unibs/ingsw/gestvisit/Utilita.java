@@ -8,10 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Utilita {
+    private static final String CREDENZIALI_FILE_PATH_LUOGHI = "src/it/unibs/ingsw/gestvisit/luoghi.txt";
+    private static final String CREDENZIALI_FILE_PATH_VOLONTARI = "src/it/unibs/ingsw/gestvisit/volontari.txt";
 
-        public static void popolaLuoghi(List<Luogo> luoghi) {
+    public static void popolaLuoghi(List<Luogo> luoghi) {
         // Leggi i dati dei luoghi da un file (ad esempio, "luoghi.txt")
-        try (BufferedReader br = new BufferedReader(new FileReader("luoghi.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(CREDENZIALI_FILE_PATH_LUOGHI))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] dati = line.split(",");
@@ -28,7 +30,7 @@ public class Utilita {
 
     public static void popolaVolontari(List<Volontario> volontari) {
         // Leggi i dati dei volontari da un file (ad esempio, "volontari.txt")
-        try (BufferedReader br = new BufferedReader(new FileReader("volontari.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(CREDENZIALI_FILE_PATH_VOLONTARI))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] dati = line.split(",");
