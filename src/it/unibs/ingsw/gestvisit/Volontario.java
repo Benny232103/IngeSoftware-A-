@@ -3,16 +3,23 @@ package src.it.unibs.ingsw.gestvisit;
 public class Volontario extends Utente {
     private String email;
     private String password;
+    private String tipiDiVisite;
     
-    public Volontario(String nome, String cognome, String email, String password) {
+    public Volontario(String nome, String cognome, String email, String password, String tipiDiVisite) {
         super(nome, cognome);
-        if (nome == null || cognome == null || email == null || password == null) {
-            throw new IllegalArgumentException("I campi non possono essere null");
-        }
         this.email = email;
         this.password = password;
+        this.tipiDiVisite = tipiDiVisite;
     }
     
+    public String getTipiDiVisite() {
+        return tipiDiVisite;
+    }
+
+    public void setTipiDiVisite(String tipiDiVisite) {
+        this.tipiDiVisite = tipiDiVisite;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -31,6 +38,6 @@ public class Volontario extends Utente {
 
     @Override
     public String toString() {
-        return "Volontario: " + super.getNome() + " " + super.getCognome() + " " + email + " ";
+        return "Volontario: " + super.getNome() + " " + super.getCognome() + " " + email + " " + tipiDiVisite + " ";
     }
 }

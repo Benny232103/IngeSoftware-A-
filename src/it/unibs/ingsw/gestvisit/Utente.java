@@ -6,9 +6,9 @@ public class Utente {
     private String nome;
     private String cognome;
 
-    public Utente(String nomeUtente, String password) {
+    public Utente(String nome, String cognome) {
         this.nome = nome;
-        this.cognome = cognome; // assuming password should not be assigned to cognome
+        this.cognome = cognome; // assuming an empty default, can modify as per requirements
     }
 
     public void setNome(String nome) {

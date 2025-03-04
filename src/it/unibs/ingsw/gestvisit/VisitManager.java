@@ -1,6 +1,8 @@
 package src.it.unibs.ingsw.gestvisit;
 
 import it.unibs.fp.libjava.*;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -10,6 +12,7 @@ public class VisitManager {
     private List<Luogo> luoghi = new ArrayList<>();
     private List<Volontario> volontari = new ArrayList<>();
     private List<Configuratore> configuratori = new ArrayList<>();
+    private Set <DayOfWeek> giorniPreclusi=EnumSet.noneOf(DayOfWeek.class);
     private CredentialManager credentialManager = new CredentialManager();
 
     public void menu() {
@@ -47,6 +50,8 @@ public class VisitManager {
         String collocazioneGeografica = InputDati.leggiStringaNonVuota("dove è situato questo luogo? ");
         Luogo luogo = new Luogo(nome, descrizione, collocazioneGeografica, tipiVisita, volontari);
         luoghi.add(luogo);
+        Utilita.salvaLuoghi(luogo);        
+        System.out.println("Luogo aggiunto con successo.");
     }
 
     public void addVolontario() {
@@ -54,17 +59,11 @@ public class VisitManager {
         String cognome = InputDati.leggiStringaNonVuota("inserire il cognome del volontario: ");
         String email = InputDati.leggiStringaNonVuota("inserire l'email del volontario: ");
         String password = InputDati.leggiStringaNonVuota("inserire la password: ");
-        Volontario volontario = new Volontario(nome, cognome, email, password);
+        String tipodiVisita = InputDati.leggiStringaNonVuota("inserire il tipo di visita preferita: ");
+        Volontario volontario = new Volontario(nome, cognome, email, password, tipodiVisita);
         volontari.add(volontario);
-    }
-
-    public void addConfiguratore() {
-        String nome = InputDati.leggiStringaNonVuota("inserire il nome del configuratore: ");
-        String cognome = InputDati.leggiStringaNonVuota("inserire il cognome del configuratore: ");
-        String email = InputDati.leggiStringaNonVuota("inserire l'email del configuratore: ");
-        String password = InputDati.leggiStringaNonVuota("inserire la password: ");
-        Configuratore configuratore = new Configuratore(nome, cognome, email, password);
-        configuratori.add(configuratore);
+        credentialManager.aggiungiUtente(volontario);
+        credentialManager.salvaCredenziali();
     }
 
     public void showLuoghi() {
@@ -98,4 +97,5 @@ public class VisitManager {
     public void leggiCredenzialiConfiguratore() {
         credentialManager.caricaCredenzialiConfiguratore(configuratori);
     }
+            
 }

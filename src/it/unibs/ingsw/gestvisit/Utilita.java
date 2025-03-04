@@ -1,6 +1,8 @@
 package src.it.unibs.ingsw.gestvisit;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,7 +40,8 @@ public class Utilita {
                 String cognome = dati[1];
                 String email = dati[2];
                 String password = dati[3];
-                Volontario volontario = new Volontario(nome, cognome, email, password);
+                String tipiDiVisite = dati[4];
+                Volontario volontario = new Volontario(nome, cognome, email, password, tipiDiVisite);
                 volontari.add(volontario);
             }
         } catch (IOException e) {
@@ -53,28 +56,26 @@ public class Utilita {
         luoghi.add(luogo2);
     }
 
-    public static void creazioneVolontari(HashMap<String, List<String>> volontari){
-        List<String> volontariLuogo1 = new ArrayList<>();
-        volontariLuogo1.add("volontario1");
-        volontariLuogo1.add("volontario2");
-        volontari.put("alla scoperta del castello Bonoris", volontariLuogo1);
-
-        List<String> volontariLuogo2 = new ArrayList<>();
-        volontariLuogo2.add("volontario3");
-        volontariLuogo2.add("volontario4");
-        volontari.put("Pinacoteca Pasinetti: un luogo d'eccellenza per scoprire l'arte monteclarense", volontariLuogo2);
+    public static void creazioneTipiVisite(HashMap<String, List<String>> tipiVisite, List<GestVisite> visites){
+        List<Giorni> giornis = new List<Giorni>();
+        giornis.add(Giorni.DOMENICA);
+        giornis.add(Giorni.SABATO);
+        giornis.add(Giorni.VENERDI);
+        GestVisite visita = GestVisite.creaGestVisite("alla scoperta del castello Bonoris", "magnifica visita guidata all'interno del castello", "nel cortile del castello", "tutto l'anno", giornis, 18, 1, "biglietto acquistabile in loco");
+        GestVisite visita3 = GestVisite.creaGestVisite("alla scoperta del castello Bonoris", "visita libera all'interno del castello", "nessun luogo", "tutto l'anno", giornis, 14, 2, "biglietto acquistabile in loco");
+        GestVisite visita2 = GestVisite.creaGestVisite("alla scoperta della pinacoteca Pasinetti", "magnifica visita guidata all'interno della celebrissima pinacoteca monteclarense", "nell'atrio della pinacoteca", "tutto l'anno", giornis, 16, 2, "biglietto acquistabile in loco");
+        visites.add(visita);
+        visites.add(visita2);
+        visites.add(visita3); 
     }
 
-    public static void creazioneTipiVisite(HashMap<String, List<String>> tipiVisite){
-        List<String> tipiVisitaLuogo1 = new ArrayList<>();
-        tipiVisitaLuogo1.add("visita guidata");
-        tipiVisitaLuogo1.add("visita libera");
-        tipiVisite.put("alla scoperta del castello Bonoris", tipiVisitaLuogo1);
-
-        List<String> tipiVisitaLuogo2 = new ArrayList<>();
-        tipiVisitaLuogo2.add("visita guidata");
-        tipiVisitaLuogo2.add("visita libera");
-        tipiVisite.put("Pinacoteca Pasinetti: un luogo d'eccellenza per scoprire l'arte monteclarense", tipiVisitaLuogo2);
+    public static void salvaLuoghi(Luogo luogo) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(CREDENZIALI_FILE_PATH_LUOGHI))) {
+            bw.write(luogo.getNome() + "," + luogo.getCollocazioneGeografica() + "," + luogo.getDescrizione());
+            bw.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     /* 
     public static void creaCredeziali(CredentialManager salvaCredenziali){

@@ -18,6 +18,19 @@ class Luogo {
         this.volontari = volontari;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
+    public String getDescrizione() {
+        return descrizione;
+    }
+
+    public String getCollocazioneGeografica() {
+        return collocazioneGeografica;
+    }
+    
+
   /* public void aggiungiTipoVisita(String tipo) {
         tipiVisita.add(tipo);
     } */

@@ -1,1 +1,4 @@
-Configuratore,null,null,test2@gmail.com,pas123
+Credenziali di accesso temporanee:
+Configuratore,config1,null,config1@gmail.com,pass1
+Configuratore,config2,null,config2@gmail.com,pass2
+Credenziali di accesso definitive:

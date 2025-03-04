@@ -62,9 +62,10 @@ public class CredentialManager {
                 String cognome = credenziali[2];
                 String email = credenziali[3];
                 String password = credenziali[4];
+                String tipiDiVisite = credenziali[5];
                 switch (tipoUtente) {
                     case "Volontario":
-                        volontari.add(new Volontario(nome, cognome, email, password));
+                        volontari.add(new Volontario(nome, cognome, email, password, tipiDiVisite));
                         break;
                     /* 
                     case "Utente":
@@ -115,13 +116,17 @@ public class CredentialManager {
     public void saveNewConfigCredential(List<Configuratore> configuratori) {
         String newNomeUtente = InputDati.leggiStringaNonVuota("Inserisci il nuovo nome utente (email): ");
         String newPassword = InputDati.leggiStringaNonVuota("Inserisci la nuova password: ");
+        String name = InputDati.leggiStringaNonVuota("Inserisci il nome: ");
+        String surname = InputDati.leggiStringaNonVuota("Inserisci il cognome: ");
         
-        Configuratore configuratore = configuratori.get(0); // Supponiamo che ci sia solo un configuratore
-        configuratore.setEmail(newNomeUtente);
-        configuratore.setPassword(newPassword);
+        Configuratore configuratore1 = configuratori.get(0); 
+        configuratore1.setEmail(newNomeUtente);
+        configuratore1.setPassword(newPassword);
+        configuratore1.setNome(name);
+        configuratore1.setCognome(surname);
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CREDENZIALI_FILE_PATH_CONFIGURATORI, false))) {
-            writer.write("Configuratore," + configuratore.getNome() + "," + configuratore.getCognome() + "," + configuratore.getEmail() + "," + configuratore.getPassword());
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CREDENZIALI_FILE_PATH_CONFIGURATORI, true))) {
+            writer.write("Configuratore," + configuratore1.getNome() + "," + configuratore1.getCognome() + "," + configuratore1.getEmail() + "," + configuratore1.getPassword());
             writer.newLine();
             System.out.println("Nuove credenziali salvate.");
         } catch (IOException e) {
