@@ -1,0 +1,2 @@
+Configuratore,config1,surname1,config1@gmail.com,pass1
+Configuratore,config2,surname2,config2@gmail.com,pass2

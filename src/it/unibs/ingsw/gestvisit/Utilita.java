@@ -35,9 +35,8 @@ public class Utilita {
                 String nome = dati[0];
                 String cognome = dati[1];
                 String email = dati[2];
-                String nomeUtente = dati[3];
-                String password = dati[4];
-                Volontario volontario = new Volontario(nome, cognome, email, nomeUtente, password);
+                String password = dati[3];
+                Volontario volontario = new Volontario(nome, cognome, email, password);
                 volontari.add(volontario);
             }
         } catch (IOException e) {
@@ -75,11 +74,12 @@ public class Utilita {
         tipiVisitaLuogo2.add("visita libera");
         tipiVisite.put("Pinacoteca Pasinetti: un luogo d'eccellenza per scoprire l'arte monteclarense", tipiVisitaLuogo2);
     }
-    
+    /* 
     public static void creaCredeziali(CredentialManager salvaCredenziali){
-        Configuratore configuratore1 = new Configuratore("Mario", "Rossi", "mario.rossi@gmail.com", "mario.rossi@gmail.com", "pass12");
-        Configuratore configuratore2 = new Configuratore("Luca", "Bianchi", "luca.bianchi@gmail.com", "luca.bianchi@gmail.com", "pass123");
+        Configuratore configuratore1 = new Configuratore("Mario", "Rossi", "mario.rossi@gmail.com", "pass12");
+        Configuratore configuratore2 = new Configuratore("Luca", "Bianchi",  "luca.bianchi@gmail.com", "pass123");
         salvaCredenziali.salvaCredenziali();
         salvaCredenziali.caricaCredenziali();
     }
+    */
 }

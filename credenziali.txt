@@ -1,4 +1,0 @@
-Configuratore, config1, pass1, config1@gmail.com
-Configuratore, config2, pass2, config2@gmail.com
-Volontario,Mario,Rossi,mario.rossi@gmail.com,mario.rossi@gmail.com,pass12
-Volontario,Luigi,Bianchi,luigi.bianchi@gmail.com,luigi.bianchi@gmail.com, pass123
