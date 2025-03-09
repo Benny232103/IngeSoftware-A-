@@ -5,15 +5,15 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
 
-
 public class VisitManager {
 
-    private static final String[] SELECT = {"Add Luogo", "Add Volontario", "Show Luoghi", "Show Volontari", "Exit"};
+    private static final String[] SELECT = {"Add Luogo", "Add Volontario", "Show Luoghi", "Show Volontari"};
     private List<Luogo> luoghi = new ArrayList<>();
     private List<Volontario> volontari = new ArrayList<>();
     private List<Configuratore> configuratori = new ArrayList<>();
-    private Set <DayOfWeek> giorniPreclusi=EnumSet.noneOf(DayOfWeek.class);
+    private List<TemporaryCredential> temporaryCredentials = new ArrayList<>();
     private CredentialManager credentialManager = new CredentialManager();
+    private boolean credenzialiModificate = false;
 
     public void menu() {
         Utilita.popolaLuoghi(luoghi);
@@ -42,6 +42,39 @@ public class VisitManager {
         } while (goOn);
     }
 
+    public void menuStart() {
+        Utilita.popolaLuoghi(luoghi);
+        Utilita.popolaVolontari(volontari);
+        boolean goOn = true;
+        do {
+            MyMenu menu = new MyMenu("New or not?\n", SELECT);
+            int chosed = menu.scegli();
+
+            if (chosed != 0) {
+                if (chosed == 1) {
+                    System.out.println("Welcome");
+                    if (autenticaConfiguratore()) {
+                        System.out.println("Configuratore Autenticato con successo");
+                        menu();
+                    } else if (autenticaTemporaneo()) {
+                        System.out.println("Accesso Temporaneo");
+                        modificaCredenzialiConfiguratore();
+                        menu();
+                    } else if (!autenticaConfiguratore() && !autenticaTemporaneo()) {
+                        System.out.println("Accesso Negato");
+                        
+                    };
+                } else if (chosed == 2) {
+                    System.out.println("U choose Volontario");
+                    addVolontario();
+                } else if (chosed == 0) {
+                    goOn = false;
+                }
+            } else
+                goOn = false;
+        } while (goOn);
+    }
+
     public void addLuogo() {
         HashMap<String, List<String>> tipiVisita = new HashMap<String, List<String>>();
         HashMap<String, List<String>> volontari = new HashMap<String, List<String>>();
@@ -50,20 +83,25 @@ public class VisitManager {
         String collocazioneGeografica = InputDati.leggiStringaNonVuota("dove è situato questo luogo? ");
         Luogo luogo = new Luogo(nome, descrizione, collocazioneGeografica, tipiVisita, volontari);
         luoghi.add(luogo);
-        Utilita.salvaLuoghi(luogo);        
-        System.out.println("Luogo aggiunto con successo.");
     }
 
     public void addVolontario() {
         String nome = InputDati.leggiStringaNonVuota("inserire il nome del volontario: ");
         String cognome = InputDati.leggiStringaNonVuota("inserire il cognome del volontario: ");
         String email = InputDati.leggiStringaNonVuota("inserire l'email del volontario: ");
+        String nomeUtente = email;
         String password = InputDati.leggiStringaNonVuota("inserire la password: ");
-        String tipodiVisita = InputDati.leggiStringaNonVuota("inserire il tipo di visita preferita: ");
-        Volontario volontario = new Volontario(nome, cognome, email, password, tipodiVisita);
+        Volontario volontario = new Volontario(nome, cognome, email, nomeUtente, password);
         volontari.add(volontario);
-        credentialManager.aggiungiUtente(volontario);
-        credentialManager.salvaCredenziali();
+    }
+
+    public void addConfiguratore() {
+        String nome = InputDati.leggiStringaNonVuota("inserire il nome del configuratore: ");
+        String cognome = InputDati.leggiStringaNonVuota("inserire il cognome del configuratore: ");
+        String email = InputDati.leggiStringaNonVuota("inserire l'email del configuratore: ");
+        String password = InputDati.leggiStringaNonVuota("inserire la password: ");
+        Configuratore configuratore = new Configuratore(nome, cognome, email, password);
+        configuratori.add(configuratore);
     }
 
     public void showLuoghi() {
@@ -84,6 +122,19 @@ public class VisitManager {
 
         for (Configuratore configuratore : configuratori) {
             if (configuratore.getEmail().equals(nomeUtente) && configuratore.getPassword().equals(password)) {
+                credenzialiModificate = true;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean autenticaTemporaneo() {
+        String nomeUtente = InputDati.leggiStringaNonVuota("Inserisci il nome utente: ");
+        String password = InputDati.leggiStringaNonVuota("Inserisci la password: ");
+
+        for (TemporaryCredential tempCred : temporaryCredentials) {
+            if (tempCred.getUsername().equals(nomeUtente) && tempCred.getPassword().equals(password)) {
                 return true;
             }
         }
@@ -95,7 +146,11 @@ public class VisitManager {
     }
 
     public void leggiCredenzialiConfiguratore() {
+        credentialManager.caricaCredenzialiTemporanee(temporaryCredentials);
         credentialManager.caricaCredenzialiConfiguratore(configuratori);
     }
-            
+
+    public boolean isCredenzialiModificate() {
+        return credenzialiModificate;
+    }
 }

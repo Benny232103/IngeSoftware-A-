@@ -57,7 +57,7 @@ public class Utilita {
     }
 
     public static void creazioneTipiVisite(HashMap<String, List<String>> tipiVisite, List<GestVisite> visites){
-        List<Giorni> giornis = new List<Giorni>();
+        List<Giorni> giornis = new ArrayList<Giorni>();
         giornis.add(Giorni.DOMENICA);
         giornis.add(Giorni.SABATO);
         giornis.add(Giorni.VENERDI);

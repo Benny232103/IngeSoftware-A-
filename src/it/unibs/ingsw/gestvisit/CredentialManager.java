@@ -15,8 +15,10 @@ import it.unibs.fp.libjava.InputDati;
 public class CredentialManager {
     private List<Utente> utenti = new ArrayList<>();
     public List<Volontario> volontari = new ArrayList<>();
-    private static final String CREDENZIALI_FILE_PATH_CONFIGURATORI = "src/it/unibs/ingsw/gestvisit/credenzialiConfiguratori.txt";
+    private static final String CREDENZIALI_FILE_PATH_CONFIGURATORI_INIZ = "src/it/unibs/ingsw/gestvisit/credenzialiInizialiConf.txt";
+    private static final String CREDENZIALI_FILE_PATH_CONFIG_PERS = "src/it/unibs/ingsw/gestvisit/credenzialiConfiguratoriPers.txt";
     private static final String CREDENZIALI_FILE_PATH_GENERALS = "src/it/unibs/ingsw/gestvisit/credenziali.txt";
+    private static final String CREDENZIALI_FILE_PATH_TEMP = "src/it/unibs/ingsw/gestvisit/credenzialiTemporanee.txt";
 
     public void aggiungiUtente(Utente utente) {
         utenti.add(utente);
@@ -86,10 +88,10 @@ public class CredentialManager {
     }
 
     public void caricaCredenzialiConfiguratore(List<Configuratore> configuratori) {
-        File file = new File(CREDENZIALI_FILE_PATH_CONFIGURATORI);
+        File file = new File(CREDENZIALI_FILE_PATH_CONFIGURATORI_INIZ);
 
         if (!file.exists()) {
-            System.out.println("File " + CREDENZIALI_FILE_PATH_CONFIGURATORI + " non trovato.");
+            System.out.println("File " + CREDENZIALI_FILE_PATH_CONFIGURATORI_INIZ + " non trovato.");
             System.out.println("Percorso assoluto: " + file.getAbsolutePath());
             return;
         }
@@ -113,6 +115,31 @@ public class CredentialManager {
         }
     }
 
+    public void caricaCredenzialiTemporanee(List<TemporaryCredential> temporaryCredentials) {
+        File file = new File(CREDENZIALI_FILE_PATH_TEMP);
+
+        if (!file.exists()) {
+            System.out.println("File " + CREDENZIALI_FILE_PATH_TEMP + " non trovato.");
+            System.out.println("Percorso assoluto: " + file.getAbsolutePath());
+            return;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] credenziali = line.split(",");
+                if (credenziali.length == 2) {
+                    String username = credenziali[0].trim();
+                    String password = credenziali[1].trim();
+                    temporaryCredentials.add(new TemporaryCredential(username, password));
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Errore durante la lettura del file.");
+            e.printStackTrace();
+        }
+    }
+
     public void saveNewConfigCredential(List<Configuratore> configuratori) {
         String newNomeUtente = InputDati.leggiStringaNonVuota("Inserisci il nuovo nome utente (email): ");
         String newPassword = InputDati.leggiStringaNonVuota("Inserisci la nuova password: ");
@@ -125,7 +152,7 @@ public class CredentialManager {
         configuratore1.setNome(name);
         configuratore1.setCognome(surname);
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CREDENZIALI_FILE_PATH_CONFIGURATORI, true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CREDENZIALI_FILE_PATH_CONFIG_PERS, true))) {
             writer.write("Configuratore," + configuratore1.getNome() + "," + configuratore1.getCognome() + "," + configuratore1.getEmail() + "," + configuratore1.getPassword());
             writer.newLine();
             System.out.println("Nuove credenziali salvate.");
@@ -133,5 +160,21 @@ public class CredentialManager {
             System.out.println("Errore durante la scrittura del file.");
             e.printStackTrace();
         }
+    }
+
+    public boolean verificaCredenziali(String username, String password, List<Configuratore> configuratori, List<TemporaryCredential> temporaryCredentials) {
+        for (TemporaryCredential tempCred : temporaryCredentials) {
+            if (tempCred.getUsername().equals(username) && tempCred.getPassword().equals(password)) {
+                return true; // Credenziali temporanee valide
+            }
+        }
+
+        for (Configuratore configuratore : configuratori) {
+            if (configuratore.getEmail().equals(username) && configuratore.getPassword().equals(password)) {
+                return true; // Credenziali configuratore valide
+            }
+        }
+
+        return false; // Credenziali non valide
     }
 }
