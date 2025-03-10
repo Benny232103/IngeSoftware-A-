@@ -1,5 +1,5 @@
 Credenziali temporanee config:
-config1,pass1
+admin,admin
 
 Credenziali personali Configuratori:
 Configuratore,Mario,Rossi,mario.rossi@gmail.com,pass12

@@ -1,7 +1,5 @@
 package src.it.unibs.ingsw.gestvisit;
 
-import it.unibs.fp.libjava.InputDati;
-
 public class Utente {
     private String nome;
     private String cognome;

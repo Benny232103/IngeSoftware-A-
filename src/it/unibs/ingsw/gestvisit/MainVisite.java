@@ -6,14 +6,8 @@ public class MainVisite {
         manager.leggiCredenzialiConfiguratore();
 
         if(manager.autenticaConfiguratore()){
-            System.out.println("Configuratore Autenticato con successo");
+            System.out.println("Accesso Effettuato");
             manager.menu();
-        }else if (manager.autenticaTemporaneo()){
-            System.out.println("Accesso Temporaneo");
-            manager.modificaCredenzialiConfiguratore();
-            manager.menu();
-        }else if (!manager.autenticaConfiguratore() && !manager.autenticaTemporaneo()){
-            System.out.println("Accesso Negato");
         }
     }
 }

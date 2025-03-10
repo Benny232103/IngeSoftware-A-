@@ -42,39 +42,6 @@ public class VisitManager {
         } while (goOn);
     }
 
-    public void menuStart() {
-        Utilita.popolaLuoghi(luoghi);
-        Utilita.popolaVolontari(volontari);
-        boolean goOn = true;
-        do {
-            MyMenu menu = new MyMenu("New or not?\n", SELECT);
-            int chosed = menu.scegli();
-
-            if (chosed != 0) {
-                if (chosed == 1) {
-                    System.out.println("Welcome");
-                    if (autenticaConfiguratore()) {
-                        System.out.println("Configuratore Autenticato con successo");
-                        menu();
-                    } else if (autenticaTemporaneo()) {
-                        System.out.println("Accesso Temporaneo");
-                        modificaCredenzialiConfiguratore();
-                        menu();
-                    } else if (!autenticaConfiguratore() && !autenticaTemporaneo()) {
-                        System.out.println("Accesso Negato");
-                        
-                    };
-                } else if (chosed == 2) {
-                    System.out.println("U choose Volontario");
-                    addVolontario();
-                } else if (chosed == 0) {
-                    goOn = false;
-                }
-            } else
-                goOn = false;
-        } while (goOn);
-    }
-
     public void addLuogo() {
         HashMap<String, List<String>> tipiVisita = new HashMap<String, List<String>>();
         HashMap<String, List<String>> volontari = new HashMap<String, List<String>>();
@@ -120,22 +87,17 @@ public class VisitManager {
         String nomeUtente = InputDati.leggiStringaNonVuota("Inserisci il nome utente (email): ");
         String password = InputDati.leggiStringaNonVuota("Inserisci la password: ");
 
-        for (Configuratore configuratore : configuratori) {
-            if (configuratore.getEmail().equals(nomeUtente) && configuratore.getPassword().equals(password)) {
-                credenzialiModificate = true;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean autenticaTemporaneo() {
-        String nomeUtente = InputDati.leggiStringaNonVuota("Inserisci il nome utente: ");
-        String password = InputDati.leggiStringaNonVuota("Inserisci la password: ");
-
-        for (TemporaryCredential tempCred : temporaryCredentials) {
-            if (tempCred.getUsername().equals(nomeUtente) && tempCred.getPassword().equals(password)) {
-                return true;
+        if(nomeUtente.equals("admin") && password.equals("admin")){
+            modificaCredenzialiConfiguratore();
+            return true;
+        }else {
+            for (Configuratore configuratore : configuratori ) {
+                if (configuratore.getEmail().equals(nomeUtente) && configuratore.getPassword().equals(password)) {
+                    return true;
+                }else {
+                    System.out.println("Credenziali non valide.");
+                    return false;
+                }
             }
         }
         return false;

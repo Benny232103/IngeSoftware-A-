@@ -116,22 +116,33 @@ public class CredentialManager {
     }
 
     public void caricaCredenzialiTemporanee(List<TemporaryCredential> temporaryCredentials) {
-        File file = new File(CREDENZIALI_FILE_PATH_TEMP);
+        File file = new File(CREDENZIALI_FILE_PATH_CONFIGURATORI_INIZ);
 
         if (!file.exists()) {
-            System.out.println("File " + CREDENZIALI_FILE_PATH_TEMP + " non trovato.");
+            System.out.println("File " + CREDENZIALI_FILE_PATH_CONFIGURATORI_INIZ + " non trovato.");
             System.out.println("Percorso assoluto: " + file.getAbsolutePath());
             return;
         }
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
+            boolean isTemporarySection = false;
             while ((line = reader.readLine()) != null) {
+                if (line.startsWith("Credenziali temporanee config:")) {
+                    isTemporarySection = true;
+                    continue;
+                } else if (line.startsWith("Credenziali personali Configuratori:")) {
+                    isTemporarySection = false;
+                    continue;
+                }
+
                 String[] credenziali = line.split(",");
-                if (credenziali.length == 2) {
-                    String username = credenziali[0].trim();
-                    String password = credenziali[1].trim();
-                    temporaryCredentials.add(new TemporaryCredential(username, password));
+                if (isTemporarySection) {
+                    if (credenziali.length == 2) {
+                        String username = credenziali[0].trim();
+                        String password = credenziali[1].trim();
+                        temporaryCredentials.add(new TemporaryCredential(username, password));
+                    }
                 }
             }
         } catch (IOException e) {
@@ -139,7 +150,7 @@ public class CredentialManager {
             e.printStackTrace();
         }
     }
-
+    
     public void saveNewConfigCredential(List<Configuratore> configuratori) {
         String newNomeUtente = InputDati.leggiStringaNonVuota("Inserisci il nuovo nome utente (email): ");
         String newPassword = InputDati.leggiStringaNonVuota("Inserisci la nuova password: ");

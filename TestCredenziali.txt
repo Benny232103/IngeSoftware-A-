@@ -1,5 +1,0 @@
-Credenziali temporanee config:
-config1,pass1
-
-Credenziali personali Configuratori:
-Configuratore,Mario,Rossi,mario.rossi@gmail.com,pass12
