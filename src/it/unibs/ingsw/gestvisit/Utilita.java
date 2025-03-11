@@ -23,7 +23,7 @@ public class Utilita {
                 String nome = dati[0];
                 String descrizione = dati[1];
                 String collocazioneGeografica = dati[2];
-                Luogo luogo = new Luogo(nome, descrizione, collocazioneGeografica, new HashMap<>());
+                Luogo luogo = new Luogo(nome, descrizione, collocazioneGeografica);
                 luoghi.add(luogo);
             }
         } catch (IOException e) {
@@ -51,13 +51,13 @@ public class Utilita {
     }
 
     public static void creazioneLuoghi(ArrayList<Luogo> luoghi, HashMap<String, List<String>> volontari, HashMap<String, List<String>> tipiVisite){
-        Luogo luogo1 = Luogo.creaLuogoUtente("alla scoperta del castello Bonoris", "una fantastica visita alla scoperta del bellissimo castello di montichiari: il luogo che rappresenta appieno questa favola cittadina", "Montichiari, piazza Santa Maria, 36", volontari);
-        Luogo luogo2 = Luogo.creaLuogoUtente("Pinacoteca Pasinetti: un luogo d'eccellenza per scoprire l'arte monteclarense", "una fantastica visita attraverso le varie epoche dell'arte monteclarense", "Montichiari, Via Trieste, 56", volontari);
+        Luogo luogo1 = Luogo.creaLuogoUtente("Castello Bonoris", "una fantastica visita alla scoperta del bellissimo castello di montichiari: il luogo che rappresenta appieno questa favola cittadina", "Montichiari, piazza Santa Maria, 36");
+        Luogo luogo2 = Luogo.creaLuogoUtente("Pinacoteca Pasinetti: un luogo d'eccellenza per scoprire l'arte monteclarense", "una fantastica visita attraverso le varie epoche dell'arte monteclarense", "Montichiari, Via Trieste, 56");
         luoghi.add(luogo1);
         luoghi.add(luogo2);
     }
 
-    public static void creazioneTipiVisite(HashMap<String, List<String>> tipiVisite, List<GestVisite> visites){
+    public static void creazioneTipiVisite(ArrayList<GestVisite> tipiVisite){
         List<Giorni> giornis = new ArrayList<Giorni>();
         giornis.add(Giorni.DOMENICA);
         giornis.add(Giorni.SABATO);
@@ -65,9 +65,9 @@ public class Utilita {
         GestVisite visita1 = GestVisite.creaGestVisite("alla scoperta del castello Bonoris", "magnifica visita guidata all'interno del castello", "nel cortile del castello", "tutto l'anno", giornis, 18, 1, "biglietto acquistabile in loco", 10);
         GestVisite visita2 = GestVisite.creaGestVisite("alla scoperta del castello di Brescia", "visita libera all'interno del castello", "nessun luogo", "tutto l'anno", giornis, 14, 2, "biglietto acquistabile in loco", 20);
         GestVisite visita3 = GestVisite.creaGestVisite("alla scoperta della pinacoteca Pasinetti", "magnifica visita guidata all'interno della celebrissima pinacoteca monteclarense", "nell'atrio della pinacoteca", "tutto l'anno", giornis, 16, 2, "biglietto acquistabile in loco", 15);
-        visites.add(visita1);
-        visites.add(visita2);
-        visites.add(visita3); 
+        tipiVisite.add(visita1);
+        tipiVisite.add(visita2);
+        tipiVisite.add(visita3); 
     }
 
     public static void salvaLuoghi(Luogo luogo) {
@@ -79,7 +79,16 @@ public class Utilita {
         }
     }
 
-    public static void stampaVisite(HashMap<Luogo, HashMap<String, List<String>>> mappaVisite) {
+    public static void salvaVolontari(Volontario volontario) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(CREDENZIALI_FILE_PATH_VOLONTARI))) {
+            bw.write(volontario.getNome() + "," + volontario.getCognome() + "," + volontario.getEmail() + "," + volontario.getPassword() + "," + volontario.getTipiDiVisite());
+            bw.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void caricaVisite(HashMap<Luogo, HashMap<String, List<String>>> mappaVisite) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(CREDENZIALI_FILE_PATH_VISITE))) {
             for (Luogo luogo : mappaVisite.keySet()) {
                 for (String tipoVisita : mappaVisite.get(luogo).keySet()) {
@@ -92,7 +101,18 @@ public class Utilita {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    public static void stampaVisite(HashMap<Luogo, HashMap<String, List<String>>> mappaVisite) {
+        for (Luogo luogo : mappaVisite.keySet()) {
+            System.out.println(luogo.getNome());
+            for (String tipoVisita : mappaVisite.get(luogo).keySet()) {
+                System.out.println("\t" + tipoVisita);
+                for (String volontario : mappaVisite.get(luogo).get(tipoVisita)) {
+                    System.out.println("\t\t" + volontario);
+                }
+            }
+        }
     }
 
 

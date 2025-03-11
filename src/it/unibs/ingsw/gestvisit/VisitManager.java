@@ -14,11 +14,13 @@ public class VisitManager {
     private List<TemporaryCredential> temporaryCredentials = new ArrayList<>();
     private CredentialManager credentialManager = new CredentialManager();
     private HashMap<Luogo, HashMap<String, List<String>>> mappaVisite = new HashMap<>();
+    private ArrayList<GestVisite> tipiVisita = new ArrayList<>();
     private boolean credenzialiModificate = false;
 
     public void menu() {
         Utilita.popolaLuoghi(luoghi);
         Utilita.popolaVolontari(volontari);
+        Utilita.creazioneTipiVisite(tipiVisita);
         boolean goOn = true;
         do {
             MyMenu menu = new MyMenu("What do you want to do?\n", SELECT);
@@ -50,13 +52,15 @@ public class VisitManager {
     }
 
     public void addLuogo() {
-        HashMap<String, List<String>> tipiVisita = new HashMap<String, List<String>>();
-        HashMap<String, List<String>> volontari = new HashMap<String, List<String>>();
+        //HashMap<String, List<String>> tipiVisita = new HashMap<String, List<String>>();
+        //HashMap<String, List<String>> volontari = new HashMap<String, List<String>>();
         String nome = InputDati.leggiStringaNonVuota("inserire il nome del luogo: ");
         String descrizione = InputDati.leggiStringaNonVuota("inserire una descrizione: ");
         String collocazioneGeografica = InputDati.leggiStringaNonVuota("dove è situato questo luogo? ");
-        Luogo luogo = new Luogo(nome, descrizione, collocazioneGeografica, volontari);
+        Luogo luogo = new Luogo(nome, descrizione, collocazioneGeografica);
         luoghi.add(luogo);
+        
+        Utilita.salvaLuoghi(luogo);
     }
 
     public void addVolontario() {
@@ -67,6 +71,8 @@ public class VisitManager {
         String password = InputDati.leggiStringaNonVuota("inserire la password: ");
         Volontario volontario = new Volontario(nome, cognome, email, nomeUtente, password);
         volontari.add(volontario);
+
+        Utilita.salvaVolontari(volontario);
     }
 
     public void showLuoghi() {
@@ -83,11 +89,7 @@ public class VisitManager {
 
     public void assegnaVisita() {
         LocalDate data = LocalDate.now();
-        DayOfWeek dayOfWeek = data.getDayOfWeek();
-        if (dayOfWeek.equals(DayOfWeek.SATURDAY) || dayOfWeek.equals(DayOfWeek.SUNDAY)) {
-            System.out.println("Non è possibile assegnare visite nei weekend.");
-            return;
-        }
+        
         System.out.printf("%s%n", Luogo.toString(luoghi));
         System.out.printf("%s%n", Volontario.toString(volontari));
 
@@ -109,6 +111,16 @@ public class VisitManager {
                 break;
             }
         }
+        // for (GestVisite visita : tipiVisita) {
+        //     if (visita.getTipo().equals(tipoVisita)) {
+        //         if (visita.getMaxPersonePerVisita() == 0) {
+        //             System.out.println("Numero massimo di persone per visita non impostato.");
+        //             return;
+        //         }
+        //         break;
+        //     }
+        // }
+
         if (luogo == null || volontario == null) {
             System.out.println("Luogo o volontario non trovato.");
             return;
@@ -131,8 +143,9 @@ public class VisitManager {
     }
 
     public void modifycaNumeroMaxPersonePerVisita() {
-        GestVisite gestVisite = new GestVisite();
-        gestVisite.setMaxPersonePerVisita(InputDati.leggiInteroConMinimo("Numero minimo di persone iscrivibili per visita", 2));;
+        tipiVisita.forEach(visita -> {
+            visita.setMaxPersonePerVisita(InputDati.leggiIntero("Inserisci il numero massimo di persone per visita: ", 2, 10));
+        });
     }
 
     public boolean autenticaConfiguratore() {

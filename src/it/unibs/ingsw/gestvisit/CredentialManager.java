@@ -162,7 +162,7 @@ public class CredentialManager {
         configuratore1.setNome(name);
         configuratore1.setCognome(surname);
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CREDENZIALI_FILE_PATH_CONFIGURATORI_INIZ, true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CREDENZIALI_FILE_PATH_CONFIG_PERS, true))) {
             writer.write("Configuratore," + configuratore1.getNome() + "," + configuratore1.getCognome() + "," + configuratore1.getEmail() + "," + configuratore1.getPassword());
             writer.newLine();
             System.out.println("Nuove credenziali salvate.");

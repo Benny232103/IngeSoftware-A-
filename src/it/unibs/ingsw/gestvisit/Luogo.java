@@ -9,11 +9,10 @@ class Luogo {
     private HashMap<String, List<String>> volontari;
 
 
-    public Luogo(String nome, String descrizione, String collocazioneGeografica,  HashMap<String, List<String>> volontari) {
+    public Luogo(String nome, String descrizione, String collocazioneGeografica) {
         this.nome = nome;
         this.descrizione = descrizione;
         this.collocazioneGeografica = collocazioneGeografica;
-        this.volontari = volontari;
     }
 
     public String getNome() {
@@ -37,19 +36,15 @@ class Luogo {
         volontari.add(volontario);
     }*/
 
-    public static Luogo creaLuogo(HashMap<String, List<String>> tipiVisita,  HashMap<String, List<String>> volontari){
+    public static Luogo creaLuogo(){
         String nome = InputDati.leggiStringaNonVuota("inserire il nome del luogo: ");
         String descrizione = InputDati.leggiStringaNonVuota("inserire una descrizione: ");
         String collocazioneGeografica = InputDati.leggiStringaNonVuota("dove è situato questo luogo? ");
-        return new Luogo(nome, descrizione, collocazioneGeografica, volontari);
+        return new Luogo(nome, descrizione, collocazioneGeografica);
     }
 
-    public static Luogo creaLuogoUtente(String nome, String descrizione, String collocazioneGeografica, HashMap<String, List<String>> volontari) {
-        return new Luogo(nome, descrizione, collocazioneGeografica, volontari);
-    }
-
-    public void assegnaVolontario(String volontario, List<String> orari) {
-        volontari.put(volontario, orari);
+    public static Luogo creaLuogoUtente(String nome, String descrizione, String collocazioneGeografica) {
+        return new Luogo(nome, descrizione, collocazioneGeografica);
     }
 
     public static String toString(List<Luogo> luoghi) {
