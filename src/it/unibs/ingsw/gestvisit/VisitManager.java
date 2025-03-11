@@ -7,12 +7,13 @@ import java.util.*;
 
 public class VisitManager {
 
-    private static final String[] SELECT = {"Add Luogo", "Add Volontario", "Show Luoghi", "Show Volontari"};
+    private static final String[] SELECT = {"Add Luogo", "Add Volontario", "Show Luoghi", "Show Volontari", "Assegna Visita", "Show Visite"};
     private List<Luogo> luoghi = new ArrayList<>();
     private List<Volontario> volontari = new ArrayList<>();
     private List<Configuratore> configuratori = new ArrayList<>();
     private List<TemporaryCredential> temporaryCredentials = new ArrayList<>();
     private CredentialManager credentialManager = new CredentialManager();
+    private HashMap<Luogo, HashMap<String, List<String>>> mappaVisite = new HashMap<>();
     private boolean credenzialiModificate = false;
 
     public void menu() {
@@ -34,7 +35,13 @@ public class VisitManager {
                     showLuoghi();
                 } else if (chosed == 4) {
                     showVolontari();
-                } else if (chosed == 0) {
+                } else if (chosed == 5) {
+                    assegnaVisita();
+                } else if (chosed == 6) {
+                    showVisite();
+                } else if (chosed == 7) {
+                    modifycaNumeroMaxPersonePerVisita();
+                }else if (chosed == 0) {
                     goOn = false;
                 }
             } else
@@ -48,7 +55,7 @@ public class VisitManager {
         String nome = InputDati.leggiStringaNonVuota("inserire il nome del luogo: ");
         String descrizione = InputDati.leggiStringaNonVuota("inserire una descrizione: ");
         String collocazioneGeografica = InputDati.leggiStringaNonVuota("dove è situato questo luogo? ");
-        Luogo luogo = new Luogo(nome, descrizione, collocazioneGeografica, tipiVisita, volontari);
+        Luogo luogo = new Luogo(nome, descrizione, collocazioneGeografica, volontari);
         luoghi.add(luogo);
     }
 
@@ -62,25 +69,70 @@ public class VisitManager {
         volontari.add(volontario);
     }
 
-    public void addConfiguratore() {
-        String nome = InputDati.leggiStringaNonVuota("inserire il nome del configuratore: ");
-        String cognome = InputDati.leggiStringaNonVuota("inserire il cognome del configuratore: ");
-        String email = InputDati.leggiStringaNonVuota("inserire l'email del configuratore: ");
-        String password = InputDati.leggiStringaNonVuota("inserire la password: ");
-        Configuratore configuratore = new Configuratore(nome, cognome, email, password);
-        configuratori.add(configuratore);
-    }
-
     public void showLuoghi() {
         for (Luogo luogo : luoghi) {
-            System.out.println(luogo);
+            luogo.toString();
         }
     }
 
     public void showVolontari() {
         for (Volontario volontario : volontari) {
-            System.out.println(volontario);
+            volontario.toString();
         }
+    }
+
+    public void assegnaVisita() {
+        LocalDate data = LocalDate.now();
+        DayOfWeek dayOfWeek = data.getDayOfWeek();
+        if (dayOfWeek.equals(DayOfWeek.SATURDAY) || dayOfWeek.equals(DayOfWeek.SUNDAY)) {
+            System.out.println("Non è possibile assegnare visite nei weekend.");
+            return;
+        }
+        System.out.printf("%s%n", Luogo.toString(luoghi));
+        System.out.printf("%s%n", Volontario.toString(volontari));
+
+        String nomeLuogo = InputDati.leggiStringaNonVuota("Inserisci il nome del luogo: ");
+        String nomeVolontario = InputDati.leggiStringaNonVuota("Inserisci il nome del volontario: ");
+        String tipoVisita = InputDati.leggiStringaNonVuota("Inserisci il tipo di visita: ");
+
+        Luogo luogo = null;
+        Volontario volontario = null;
+        for (Luogo l : luoghi) {
+            if (l.getNome().equals(nomeLuogo)) {
+                luogo = l;
+                break;
+            }
+        }
+        for (Volontario v : volontari) {
+            if (v.getNome().equals(nomeVolontario)) {
+                volontario = v;
+                break;
+            }
+        }
+        if (luogo == null || volontario == null) {
+            System.out.println("Luogo o volontario non trovato.");
+            return;
+        }
+
+        // Aggiungere il luogo alla mappa se non esiste già
+        mappaVisite.putIfAbsent(luogo, new HashMap<>());
+
+        // Aggiungere il tipo di visita alla mappa se non esiste già
+        mappaVisite.get(luogo).putIfAbsent(tipoVisita, new ArrayList<>());
+
+        // Aggiungere il volontario alla lista dei volontari per il tipo di visita
+        mappaVisite.get(luogo).get(tipoVisita).add(volontario.getNome() + " (" + volontario.getEmail() + ")");
+
+        Utilita.stampaVisite(mappaVisite);
+    }
+
+    public void showVisite() {
+        Utilita.stampaVisite(mappaVisite);
+    }
+
+    public void modifycaNumeroMaxPersonePerVisita() {
+        GestVisite gestVisite = new GestVisite();
+        gestVisite.setMaxPersonePerVisita(InputDati.leggiInteroConMinimo("Numero minimo di persone iscrivibili per visita", 2));;
     }
 
     public boolean autenticaConfiguratore() {

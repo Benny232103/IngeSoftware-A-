@@ -12,6 +12,7 @@ import java.util.List;
 public class Utilita {
     private static final String CREDENZIALI_FILE_PATH_LUOGHI = "src/it/unibs/ingsw/gestvisit/luoghi.txt";
     private static final String CREDENZIALI_FILE_PATH_VOLONTARI = "src/it/unibs/ingsw/gestvisit/volontari.txt";
+    private static final String CREDENZIALI_FILE_PATH_VISITE = "src/it/unibs/ingsw/gestvisit/visite.txt";
 
     public static void popolaLuoghi(List<Luogo> luoghi) {
         // Leggi i dati dei luoghi da un file (ad esempio, "luoghi.txt")
@@ -22,7 +23,7 @@ public class Utilita {
                 String nome = dati[0];
                 String descrizione = dati[1];
                 String collocazioneGeografica = dati[2];
-                Luogo luogo = new Luogo(nome, descrizione, collocazioneGeografica, new HashMap<>(), new HashMap<>());
+                Luogo luogo = new Luogo(nome, descrizione, collocazioneGeografica, new HashMap<>());
                 luoghi.add(luogo);
             }
         } catch (IOException e) {
@@ -50,8 +51,8 @@ public class Utilita {
     }
 
     public static void creazioneLuoghi(ArrayList<Luogo> luoghi, HashMap<String, List<String>> volontari, HashMap<String, List<String>> tipiVisite){
-        Luogo luogo1 = Luogo.creaLuogoUtente("alla scoperta del castello Bonoris", "una fantastica visita alla scoperta del bellissimo castello di montichiari: il luogo che rappresenta appieno questa favola cittadina", "Montichiari, piazza Santa Maria, 36", tipiVisite, volontari);
-        Luogo luogo2 = Luogo.creaLuogoUtente("Pinacoteca Pasinetti: un luogo d'eccellenza per scoprire l'arte monteclarense", "una fantastica visita attraverso le varie epoche dell'arte monteclarense", "Montichiari, Via Trieste, 56", tipiVisite, volontari);
+        Luogo luogo1 = Luogo.creaLuogoUtente("alla scoperta del castello Bonoris", "una fantastica visita alla scoperta del bellissimo castello di montichiari: il luogo che rappresenta appieno questa favola cittadina", "Montichiari, piazza Santa Maria, 36", volontari);
+        Luogo luogo2 = Luogo.creaLuogoUtente("Pinacoteca Pasinetti: un luogo d'eccellenza per scoprire l'arte monteclarense", "una fantastica visita attraverso le varie epoche dell'arte monteclarense", "Montichiari, Via Trieste, 56", volontari);
         luoghi.add(luogo1);
         luoghi.add(luogo2);
     }
@@ -61,10 +62,10 @@ public class Utilita {
         giornis.add(Giorni.DOMENICA);
         giornis.add(Giorni.SABATO);
         giornis.add(Giorni.VENERDI);
-        GestVisite visita = GestVisite.creaGestVisite("alla scoperta del castello Bonoris", "magnifica visita guidata all'interno del castello", "nel cortile del castello", "tutto l'anno", giornis, 18, 1, "biglietto acquistabile in loco");
-        GestVisite visita3 = GestVisite.creaGestVisite("alla scoperta del castello Bonoris", "visita libera all'interno del castello", "nessun luogo", "tutto l'anno", giornis, 14, 2, "biglietto acquistabile in loco");
-        GestVisite visita2 = GestVisite.creaGestVisite("alla scoperta della pinacoteca Pasinetti", "magnifica visita guidata all'interno della celebrissima pinacoteca monteclarense", "nell'atrio della pinacoteca", "tutto l'anno", giornis, 16, 2, "biglietto acquistabile in loco");
-        visites.add(visita);
+        GestVisite visita1 = GestVisite.creaGestVisite("alla scoperta del castello Bonoris", "magnifica visita guidata all'interno del castello", "nel cortile del castello", "tutto l'anno", giornis, 18, 1, "biglietto acquistabile in loco", 10);
+        GestVisite visita2 = GestVisite.creaGestVisite("alla scoperta del castello di Brescia", "visita libera all'interno del castello", "nessun luogo", "tutto l'anno", giornis, 14, 2, "biglietto acquistabile in loco", 20);
+        GestVisite visita3 = GestVisite.creaGestVisite("alla scoperta della pinacoteca Pasinetti", "magnifica visita guidata all'interno della celebrissima pinacoteca monteclarense", "nell'atrio della pinacoteca", "tutto l'anno", giornis, 16, 2, "biglietto acquistabile in loco", 15);
+        visites.add(visita1);
         visites.add(visita2);
         visites.add(visita3); 
     }
@@ -77,12 +78,22 @@ public class Utilita {
             e.printStackTrace();
         }
     }
-    /* 
-    public static void creaCredeziali(CredentialManager salvaCredenziali){
-        Configuratore configuratore1 = new Configuratore("Mario", "Rossi", "mario.rossi@gmail.com", "pass12");
-        Configuratore configuratore2 = new Configuratore("Luca", "Bianchi",  "luca.bianchi@gmail.com", "pass123");
-        salvaCredenziali.salvaCredenziali();
-        salvaCredenziali.caricaCredenziali();
+
+    public static void stampaVisite(HashMap<Luogo, HashMap<String, List<String>>> mappaVisite) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(CREDENZIALI_FILE_PATH_VISITE))) {
+            for (Luogo luogo : mappaVisite.keySet()) {
+                for (String tipoVisita : mappaVisite.get(luogo).keySet()) {
+                    for (String volontario : mappaVisite.get(luogo).get(tipoVisita)) {
+                        bw.write(luogo.getNome() + "," + tipoVisita + "," + volontario);
+                        bw.newLine();
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
-    */
+
+
 }

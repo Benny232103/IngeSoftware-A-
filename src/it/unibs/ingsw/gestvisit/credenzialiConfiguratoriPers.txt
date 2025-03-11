@@ -1,1 +1,3 @@
 Configuratore,TestName,TestSurname,test,pass1
+Configuratore,Luigi,Bianchi,luigi.bianchi@gmail.com,pas12345
+Configuratore,Mario,Rossi,mario.rossi@gmail.com,pass12

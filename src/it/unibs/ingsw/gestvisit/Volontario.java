@@ -1,5 +1,7 @@
 package src.it.unibs.ingsw.gestvisit;
 
+import java.util.List;
+
 public class Volontario extends Utente {
     private String email;
     private String password;
@@ -36,8 +38,12 @@ public class Volontario extends Utente {
         this.password = password;
     }
 
-    @Override
-    public String toString() {
-        return "Volontario: " + super.getNome() + " " + super.getCognome() + " " + email + " " + tipiDiVisite + " ";
+    
+    public static String toString(List<Volontario> volontari) {
+        StringBuilder sb = new StringBuilder();
+        for (Volontario volontario : volontari) {
+            sb.append(volontario.getNome()).append(" ").append(volontario.getTipiDiVisite()).append("\n");
+        }
+        return sb.toString();
     }
 }

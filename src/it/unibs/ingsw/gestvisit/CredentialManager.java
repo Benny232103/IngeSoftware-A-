@@ -18,7 +18,6 @@ public class CredentialManager {
     private static final String CREDENZIALI_FILE_PATH_CONFIGURATORI_INIZ = "src/it/unibs/ingsw/gestvisit/credenzialiInizialiConf.txt";
     private static final String CREDENZIALI_FILE_PATH_CONFIG_PERS = "src/it/unibs/ingsw/gestvisit/credenzialiConfiguratoriPers.txt";
     private static final String CREDENZIALI_FILE_PATH_GENERALS = "src/it/unibs/ingsw/gestvisit/credenziali.txt";
-    private static final String CREDENZIALI_FILE_PATH_TEMP = "src/it/unibs/ingsw/gestvisit/credenzialiTemporanee.txt";
 
     public void aggiungiUtente(Utente utente) {
         utenti.add(utente);
@@ -88,10 +87,10 @@ public class CredentialManager {
     }
 
     public void caricaCredenzialiConfiguratore(List<Configuratore> configuratori) {
-        File file = new File(CREDENZIALI_FILE_PATH_CONFIGURATORI_INIZ);
+        File file = new File(CREDENZIALI_FILE_PATH_CONFIG_PERS);
 
         if (!file.exists()) {
-            System.out.println("File " + CREDENZIALI_FILE_PATH_CONFIGURATORI_INIZ + " non trovato.");
+            System.out.println("File " + CREDENZIALI_FILE_PATH_CONFIG_PERS + " non trovato.");
             System.out.println("Percorso assoluto: " + file.getAbsolutePath());
             return;
         }
@@ -163,7 +162,7 @@ public class CredentialManager {
         configuratore1.setNome(name);
         configuratore1.setCognome(surname);
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CREDENZIALI_FILE_PATH_CONFIG_PERS, true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CREDENZIALI_FILE_PATH_CONFIGURATORI_INIZ, true))) {
             writer.write("Configuratore," + configuratore1.getNome() + "," + configuratore1.getCognome() + "," + configuratore1.getEmail() + "," + configuratore1.getPassword());
             writer.newLine();
             System.out.println("Nuove credenziali salvate.");

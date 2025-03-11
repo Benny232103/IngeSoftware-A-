@@ -2,12 +2,9 @@ package src.it.unibs.ingsw.gestvisit;
 import java.util.*;
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.util.HashSet;
-import java.util.Set;
 
 class GestVisite {
-
-    static final int NUMERO_MAX_PERSONE_PER_VISITA = 20;    
+    
     private String titolo;
     private String descrizioneVisita;
     private String luogoIncontro;
@@ -16,11 +13,12 @@ class GestVisite {
     private int ora;
     private int durataMinuti;
     private String descrizioneBiglietto;
+    private int maxPersonePerVisita;
     /*private List<Luogo> luoghi;
-    private Set<String> dateNonDisponibili;
-    private int maxPersonePerVisita;*/
+    private Set<String> dateNonDisponibili;*/
+    
 
-    public GestVisite(String titolo, String descrizioneVisita, String luogoIncontro, String periodoAnnoInCuiPossibileVedere, List<Giorni> giornataSettimanale, int ora, int durataMinuti, String descrizioneBiglietto) {
+    public GestVisite(String titolo, String descrizioneVisita, String luogoIncontro, String periodoAnnoInCuiPossibileVedere, List<Giorni> giornataSettimanale, int ora, int durataMinuti, String descrizioneBiglietto, int maxPersonePerVisita) {
        this.titolo = titolo;
        this.descrizioneVisita = descrizioneVisita;
        this.luogoIncontro = luogoIncontro;
@@ -29,6 +27,7 @@ class GestVisite {
        this.ora = ora;
        this.durataMinuti = durataMinuti;
        this.descrizioneBiglietto = descrizioneBiglietto;
+       this.maxPersonePerVisita = maxPersonePerVisita;
     }
 
     public String getTitolo() {
@@ -94,14 +93,22 @@ class GestVisite {
     public void setDescrizioneBiglietto(String descrizioneBiglietto) {
         this.descrizioneBiglietto = descrizioneBiglietto;
     }
+
+    public int getMaxPersonePerVisita() {
+        return maxPersonePerVisita;
+    }
+
+    public void setMaxPersonePerVisita(int maxPersonePerVisita) {
+        this.maxPersonePerVisita = maxPersonePerVisita;
+    }
     
     public String toString(){
         return " " + titolo + " " + descrizioneVisita + " " + luogoIncontro + " " + periodoAnnoInCuiPossibileVedere + " " + giornataSettimanale + " " + ora
         + " " + durataMinuti + " " + descrizioneBiglietto; 
     }
 
-    public static GestVisite creaGestVisite(String titolo, String descrizioneVisita, String luogoIncontro, String periodoAnnoInCuiPossibileVedere, List<Giorni> giornataSettimanale, int ora, int durataMinuti, String descrizioneBiglietto){
-        return new GestVisite(titolo, descrizioneVisita, luogoIncontro, periodoAnnoInCuiPossibileVedere, giornataSettimanale, ora, durataMinuti, descrizioneBiglietto);
+    public static GestVisite creaGestVisite(String titolo, String descrizioneVisita, String luogoIncontro, String periodoAnnoInCuiPossibileVedere, List<Giorni> giornataSettimanale, int ora, int durataMinuti, String descrizioneBiglietto, int maxPersonePerVisita){
+        return new GestVisite(titolo, descrizioneVisita, luogoIncontro, periodoAnnoInCuiPossibileVedere, giornataSettimanale, ora, durataMinuti, descrizioneBiglietto, maxPersonePerVisita);
     }
 
     public static Set<LocalDate> getExcludedDates(int year, int month, Set<Integer> excludedDays) {
