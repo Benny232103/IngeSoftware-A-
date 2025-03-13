@@ -172,19 +172,27 @@ public class CredentialManager {
         }
     }
 
-    public boolean verificaCredenziali(String username, String password, List<Configuratore> configuratori, List<TemporaryCredential> temporaryCredentials) {
+    public boolean[] verificaCredenziali(String username, String password, ArrayList<Configuratore> configuratori, ArrayList<TemporaryCredential> temporaryCredentials) {
+        boolean[] esito = new boolean[2]; // esito[0] = autenticato, esito[1] = credenzialiTemporanee
+
         for (TemporaryCredential tempCred : temporaryCredentials) {
             if (tempCred.getUsername().equals(username) && tempCred.getPassword().equals(password)) {
-                return true; // Credenziali temporanee valide
+                esito[0] = true; // Autenticato
+                esito[1] = true; // Credenziali temporanee
+                return esito;
             }
         }
 
         for (Configuratore configuratore : configuratori) {
             if (configuratore.getEmail().equals(username) && configuratore.getPassword().equals(password)) {
-                return true; // Credenziali configuratore valide
+                esito[0] = true; // Autenticato
+                esito[1] = false; // Credenziali personali
+                return esito;
             }
         }
 
-        return false; // Credenziali non valide
+        esito[0] = false; // Non autenticato
+        esito[1] = false; // Non rilevante
+        return esito;
     }
 }

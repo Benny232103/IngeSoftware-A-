@@ -8,10 +8,10 @@ import java.util.*;
 public class VisitManager {
 
     private static final String[] SELECT = {"Add Luogo", "Add Volontario", "Show Luoghi", "Show Volontari", "Assegna Visita", "Show Visite"};
-    private List<Luogo> luoghi = new ArrayList<>();
-    private List<Volontario> volontari = new ArrayList<>();
-    private List<Configuratore> configuratori = new ArrayList<>();
-    private List<TemporaryCredential> temporaryCredentials = new ArrayList<>();
+    private ArrayList<Luogo> luoghi = new ArrayList<>();
+    private ArrayList<Volontario> volontari = new ArrayList<>();
+    private ArrayList<Configuratore> configuratori = new ArrayList<>();
+    private ArrayList<TemporaryCredential> temporaryCredentials = new ArrayList<>();
     private CredentialManager credentialManager = new CredentialManager();
     private HashMap<Luogo, HashMap<String, List<String>>> mappaVisite = new HashMap<>();
     private ArrayList<GestVisite> tipiVisita = new ArrayList<>();
@@ -76,55 +76,35 @@ public class VisitManager {
     }
 
     public void showLuoghi() {
-        for (Luogo luogo : luoghi) {
-            luogo.toString();
-        }
+        Utilita.stampaLuoghi(luoghi);
     }
 
     public void showVolontari() {
-        for (Volontario volontario : volontari) {
-            volontario.toString();
-        }
+        Utilita.stampaVolontari(volontari);
     }
 
     public void assegnaVisita() {
         LocalDate data = LocalDate.now();
         
-        System.out.printf("%s%n", Luogo.toString(luoghi));
-        System.out.printf("%s%n", Volontario.toString(volontari));
+        // Stampa l'elenco dei luoghi
+        System.out.println("Elenco dei luoghi:");
+        for (int i = 0; i < luoghi.size(); i++) {
+            System.out.println((i + 1) + ". " + luoghi.get(i).getNome());
+        }
 
-        String nomeLuogo = InputDati.leggiStringaNonVuota("Inserisci il nome del luogo: ");
-        String nomeVolontario = InputDati.leggiStringaNonVuota("Inserisci il nome del volontario: ");
+        // Stampa l'elenco dei volontari
+        System.out.println("Elenco dei volontari:");
+        for (int i = 0; i < volontari.size(); i++) {
+            System.out.println((i + 1) + ". " + volontari.get(i).getNome() + " (" + volontari.get(i).getEmail() + ")");
+        }
+
+        // Chiedi all'utente di selezionare un luogo e un volontario
+        int indiceLuogo = InputDati.leggiIntero("Seleziona il numero del luogo: ", 1, luoghi.size()) - 1;
+        int indiceVolontario = InputDati.leggiIntero("Seleziona il numero del volontario: ", 1, volontari.size()) - 1;
         String tipoVisita = InputDati.leggiStringaNonVuota("Inserisci il tipo di visita: ");
 
-        Luogo luogo = null;
-        Volontario volontario = null;
-        for (Luogo l : luoghi) {
-            if (l.getNome().equals(nomeLuogo)) {
-                luogo = l;
-                break;
-            }
-        }
-        for (Volontario v : volontari) {
-            if (v.getNome().equals(nomeVolontario)) {
-                volontario = v;
-                break;
-            }
-        }
-        // for (GestVisite visita : tipiVisita) {
-        //     if (visita.getTipo().equals(tipoVisita)) {
-        //         if (visita.getMaxPersonePerVisita() == 0) {
-        //             System.out.println("Numero massimo di persone per visita non impostato.");
-        //             return;
-        //         }
-        //         break;
-        //     }
-        // }
-
-        if (luogo == null || volontario == null) {
-            System.out.println("Luogo o volontario non trovato.");
-            return;
-        }
+        Luogo luogo = luoghi.get(indiceLuogo);
+        Volontario volontario = volontari.get(indiceVolontario);
 
         // Aggiungere il luogo alla mappa se non esiste già
         mappaVisite.putIfAbsent(luogo, new HashMap<>());
@@ -137,7 +117,6 @@ public class VisitManager {
 
         Utilita.stampaVisite(mappaVisite);
     }
-
     public void showVisite() {
         Utilita.stampaVisite(mappaVisite);
     }
@@ -152,20 +131,16 @@ public class VisitManager {
         String nomeUtente = InputDati.leggiStringaNonVuota("Inserisci il nome utente (email): ");
         String password = InputDati.leggiStringaNonVuota("Inserisci la password: ");
 
-        if(nomeUtente.equals("admin") && password.equals("admin")){
-            modificaCredenzialiConfiguratore();
-            return true;
-        }else {
-            for (Configuratore configuratore : configuratori ) {
-                if (configuratore.getEmail().equals(nomeUtente) && configuratore.getPassword().equals(password)) {
-                    return true;
-                }else {
-                    System.out.println("Credenziali non valide.");
-                    return false;
-                }
+        boolean[] esito = credentialManager.verificaCredenziali(nomeUtente, password, configuratori, temporaryCredentials);
+        if (esito[0]) {
+            if (esito[1]) {
+                modificaCredenzialiConfiguratore();
             }
+            return true;
+        } else {
+            System.out.println("Credenziali non valide.");
+            return false;
         }
-        return false;
     }
 
     public void modificaCredenzialiConfiguratore() {

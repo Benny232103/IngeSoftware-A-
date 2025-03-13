@@ -47,12 +47,10 @@ class Luogo {
         return new Luogo(nome, descrizione, collocazioneGeografica);
     }
 
-    public static String toString(List<Luogo> luoghi) {
-        StringBuilder sb = new StringBuilder();
-        for (Luogo luogo : luoghi) {
-            sb.append(luogo.getNome()).append("\n");
-        }
-        return sb.toString();
+
+    @Override
+    public String toString() {
+        return "Luogo [collocazioneGeografica=" + collocazioneGeografica + ", descrizione=" + descrizione + ", nome=" + nome + "]";
     }
 
 }

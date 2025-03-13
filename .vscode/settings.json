@@ -1,12 +1,9 @@
 {
     "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "c:\\Users\\rugge\\Downloads\\Phone Link\\mylib.jar",
-        "c:\\Users\\Ruggero Lombardi\\Desktop\\UniBSFpLib.jar"
+        "c:\\Users\\rugge\\Downloads\\Phone Link\\mylib.jar"
     ],
     "java.project.sourcePaths": [
-        "GestoreVisite/it/unibs/ingesw/gestvisit",
-        ""
+        "."
     ],
     "java.dependency.packagePresentation": "hierarchical",
 }

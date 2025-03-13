@@ -115,5 +115,19 @@ public class Utilita {
         }
     }
 
+    public static void stampaLuoghi(List<Luogo> luoghi) {
+        System.out.println("Luoghi:");
+        for (Luogo luogo : luoghi) {
+            System.out.println(luogo);
+        }
+    }
+
+    public static void stampaVolontari(List<Volontario> volontari) {
+        System.out.println("Volontari:");
+        for (Volontario volontario : volontari) {
+            System.out.println(volontario);
+        }
+    }
+
 
 }

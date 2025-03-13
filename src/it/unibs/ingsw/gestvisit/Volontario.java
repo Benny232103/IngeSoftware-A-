@@ -38,12 +38,8 @@ public class Volontario extends Utente {
         this.password = password;
     }
 
-    
-    public static String toString(List<Volontario> volontari) {
-        StringBuilder sb = new StringBuilder();
-        for (Volontario volontario : volontari) {
-            sb.append(volontario.getNome()).append(" ").append(volontario.getTipiDiVisite()).append("\n");
-        }
-        return sb.toString();
+    @Override
+    public String toString() {
+        return "Volontario [email=" + email + ", password=" + password + ", tipiDiVisite=" + tipiDiVisite + "]";
     }
 }
