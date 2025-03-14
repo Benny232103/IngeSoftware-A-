@@ -3,7 +3,7 @@ import java.util.*;
 import java.time.LocalDate;
 import java.time.YearMonth;
 
-class GestVisite {
+class Visite {
     
     private String titolo;
     private String descrizioneVisita;
@@ -14,11 +14,19 @@ class GestVisite {
     private int durataMinuti;
     private String descrizioneBiglietto;
     private int maxPersonePerVisita;
+    private String statoVisita;
+    private Set<LocalDate> dateNonDisponibili;
     /*private List<Luogo> luoghi;
     private Set<String> dateNonDisponibili;*/
     
+    /**
+     * @param maxPersonePerVisita
+     */
+    // public GestVisite(int maxPersonePerVisita){
+    //     this.maxPersonePerVisita = maxPersonePerVisita;
+    // }
 
-    public GestVisite(String titolo, String descrizioneVisita, String luogoIncontro, String periodoAnnoInCuiPossibileVedere, List<Giorni> giornataSettimanale, int ora, int durataMinuti, String descrizioneBiglietto, int maxPersonePerVisita) {
+    public Visite(String titolo, String descrizioneVisita, String luogoIncontro, String periodoAnnoInCuiPossibileVedere, List<Giorni> giornataSettimanale, int ora, int durataMinuti, String descrizioneBiglietto, int maxPersonePerVisita, String statoVisita) {
        this.titolo = titolo;
        this.descrizioneVisita = descrizioneVisita;
        this.luogoIncontro = luogoIncontro;
@@ -28,8 +36,18 @@ class GestVisite {
        this.durataMinuti = durataMinuti;
        this.descrizioneBiglietto = descrizioneBiglietto;
        this.maxPersonePerVisita = maxPersonePerVisita;
+       this.statoVisita = statoVisita;
+    
+    }
+    
+    public String getStatoVisita() {
+        return statoVisita;
     }
 
+    public void setStatoVisita(String statoVisita) {
+        this.statoVisita = statoVisita;
+    }
+    
     public String getTitolo() {
         return titolo;
     }
@@ -104,22 +122,32 @@ class GestVisite {
     
     public String toString(){
         return " " + titolo + " " + descrizioneVisita + " " + luogoIncontro + " " + periodoAnnoInCuiPossibileVedere + " " + giornataSettimanale + " " + ora
-        + " " + durataMinuti + " " + descrizioneBiglietto; 
+        + " " + durataMinuti + " " + descrizioneBiglietto + " " + statoVisita; 
     }
 
-    public static GestVisite creaGestVisite(String titolo, String descrizioneVisita, String luogoIncontro, String periodoAnnoInCuiPossibileVedere, List<Giorni> giornataSettimanale, int ora, int durataMinuti, String descrizioneBiglietto, int maxPersonePerVisita){
-        return new GestVisite(titolo, descrizioneVisita, luogoIncontro, periodoAnnoInCuiPossibileVedere, giornataSettimanale, ora, durataMinuti, descrizioneBiglietto, maxPersonePerVisita);
+    public static Visite creaVisite(String titolo, String descrizioneVisita, String luogoIncontro, String periodoAnnoInCuiPossibileVedere, List<Giorni> giornataSettimanale, int ora, int durataMinuti, String descrizioneBiglietto, int maxPersonePerVisita, String statoVisita){
+        return new Visite(titolo, descrizioneVisita, luogoIncontro, periodoAnnoInCuiPossibileVedere, giornataSettimanale, ora, durataMinuti, descrizioneBiglietto, maxPersonePerVisita, statoVisita);
     }
 
-    public static Set<LocalDate> getExcludedDates(int year, int month, Set<Integer> excludedDays) {
-        Set<LocalDate> excludedDates = new HashSet<>();
-        YearMonth targetMonth = YearMonth.of(year, month).plusMonths(3); // Calcolo mese i+3
-        
-        for (Integer day : excludedDays) {
-            if (day >= 1 && day <= targetMonth.lengthOfMonth()) {
-                excludedDates.add(LocalDate.of(targetMonth.getYear(), targetMonth.getMonth(), day));
-            }
+    public Set<LocalDate> getDateNonDisponibili() {
+        return dateNonDisponibili;
+    }
+
+    public void setDateNonDisponibili(Set<LocalDate> dateNonDisponibili) {
+        this.dateNonDisponibili = dateNonDisponibili;
+    }
+
+    public void calcolaDateNonDisponibili (int meseCorrente){
+        YearMonth mesePrecluso = YearMonth.now().plusMonths(meseCorrente + 3);
+        LocalDate inizioPeriodo = mesePrecluso.atDay(1);
+        LocalDate finePeriodo = mesePrecluso.atEndOfMonth();
+
+        for (LocalDate date = inizioPeriodo; !date.isAfter(finePeriodo); date = date.plusDays(1)){
+            dateNonDisponibili.add(date);
         }
-        return excludedDates;
+       
     }
+
+    
+
 }

@@ -40,6 +40,6 @@ public class Volontario extends Utente {
 
     @Override
     public String toString() {
-        return "Volontario [email=" + email + ", password=" + password + ", tipiDiVisite=" + tipiDiVisite + "]";
+        return "Volontario [nome=" + super.getNome() + ", cognome=" + super.getCognome() + ", email=" + email + ", tipiDiVisite=" + tipiDiVisite + "]";
     }
 }

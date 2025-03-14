@@ -7,12 +7,14 @@ class Luogo {
     private String descrizione;
     private String collocazioneGeografica;
     private HashMap<String, List<String>> volontari;
+    private HashMap<String, List<String>> tipiVisita; 
 
 
     public Luogo(String nome, String descrizione, String collocazioneGeografica) {
         this.nome = nome;
         this.descrizione = descrizione;
         this.collocazioneGeografica = collocazioneGeografica;
+        this.tipiVisita = new HashMap<>();
     }
 
     public String getNome() {

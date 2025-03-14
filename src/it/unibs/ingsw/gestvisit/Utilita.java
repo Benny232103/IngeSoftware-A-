@@ -57,18 +57,21 @@ public class Utilita {
         luoghi.add(luogo2);
     }
 
-    public static void creazioneTipiVisite(ArrayList<GestVisite> tipiVisite){
+    /*public static void creazioneTipiVisite(ArrayList<Visite> tipiVisite){
         List<Giorni> giornis = new ArrayList<Giorni>();
         giornis.add(Giorni.DOMENICA);
         giornis.add(Giorni.SABATO);
         giornis.add(Giorni.VENERDI);
-        GestVisite visita1 = GestVisite.creaGestVisite("alla scoperta del castello Bonoris", "magnifica visita guidata all'interno del castello", "nel cortile del castello", "tutto l'anno", giornis, 18, 1, "biglietto acquistabile in loco", 10);
-        GestVisite visita2 = GestVisite.creaGestVisite("alla scoperta del castello di Brescia", "visita libera all'interno del castello", "nessun luogo", "tutto l'anno", giornis, 14, 2, "biglietto acquistabile in loco", 20);
-        GestVisite visita3 = GestVisite.creaGestVisite("alla scoperta della pinacoteca Pasinetti", "magnifica visita guidata all'interno della celebrissima pinacoteca monteclarense", "nell'atrio della pinacoteca", "tutto l'anno", giornis, 16, 2, "biglietto acquistabile in loco", 15);
+        Visite visita1 = Visite.creaVisite("alla scoperta del castello Bonoris", "magnifica visita guidata all'interno del castello", "nel cortile del castello", "tutto l'anno", giornis, 18, 1, "biglietto acquistabile in loco", 10, "effettuata");
+        Visite visita2 = Visite.creaVisite("alla scoperta del castello di Brescia", "visita libera all'interno del castello", "nessun luogo", "tutto l'anno", giornis, 14, 2, "biglietto acquistabile in loco", 20, "completa");
+        Visite visita3 = Visite.creaVisite("alla scoperta della pinacoteca Pasinetti", "magnifica visita guidata all'interno della celebrissima pinacoteca monteclarense", "nell'atrio della pinacoteca", "tutto l'anno", giornis, 16, 2, "biglietto acquistabile in loco", VisitManager., );
         tipiVisite.add(visita1);
         tipiVisite.add(visita2);
-        tipiVisite.add(visita3); 
-    }
+        tipiVisite.add(visita3);
+        // visita1.salvaVisita();
+        // visita2.salvaVisita();
+        // visita3.salvaVisita();
+    }*/
 
     public static void salvaLuoghi(Luogo luogo) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(CREDENZIALI_FILE_PATH_LUOGHI))) {
@@ -103,19 +106,15 @@ public class Utilita {
         }
     }
 
-    public static void stampaVisite(HashMap<Luogo, HashMap<String, List<String>>> mappaVisite) {
+    public static void stampaVisite(HashMap<Luogo, Visite> mappaVisite) {
         for (Luogo luogo : mappaVisite.keySet()) {
-            System.out.println(luogo.getNome());
-            for (String tipoVisita : mappaVisite.get(luogo).keySet()) {
-                System.out.println("\t" + tipoVisita);
-                for (String volontario : mappaVisite.get(luogo).get(tipoVisita)) {
-                    System.out.println("\t\t" + volontario);
-                }
-            }
+            System.out.println("Luogo: " + luogo.getNome());
+            Visite visite = mappaVisite.get(luogo);
+            System.out.println(visite);
         }
     }
-
-    public static void stampaLuoghi(List<Luogo> luoghi) {
+    
+    public static void stampaLuoghi(ArrayList<Luogo> luoghi) {
         System.out.println("Luoghi:");
         for (Luogo luogo : luoghi) {
             System.out.println(luogo);

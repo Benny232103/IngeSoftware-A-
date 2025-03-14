@@ -7,22 +7,26 @@ import java.util.*;
 
 public class VisitManager {
 
-    private static final String[] SELECT = {"Add Luogo", "Add Volontario", "Show Luoghi", "Show Volontari", "Assegna Visita", "Show Visite"};
+    private static final String[] SELECT = {"Aggiungi Luogo", "Aggiungi Volontario", "Visualizza Luoghi", "Visualizza Volontari", "Assegna Visita", "Visualizza Visite", "Modifica numero massimo di persone per visita", "Visualizza data", "Visualizza visite per stato", "Esci"};
     private ArrayList<Luogo> luoghi = new ArrayList<>();
     private ArrayList<Volontario> volontari = new ArrayList<>();
     private ArrayList<Configuratore> configuratori = new ArrayList<>();
     private ArrayList<TemporaryCredential> temporaryCredentials = new ArrayList<>();
     private CredentialManager credentialManager = new CredentialManager();
-    private HashMap<Luogo, HashMap<String, List<String>>> mappaVisite = new HashMap<>();
-    private ArrayList<GestVisite> tipiVisita = new ArrayList<>();
+    private HashMap<Luogo, Visite> mappaVisiteLuogo = new HashMap<>();
+    private ArrayList<Visite> tipiVisita = new ArrayList<>();
     private boolean credenzialiModificate = false;
 
+    /**
+     * 
+     */
     public void menu() {
         Utilita.popolaLuoghi(luoghi);
         Utilita.popolaVolontari(volontari);
-        Utilita.creazioneTipiVisite(tipiVisita);
+        //Utilita.creazioneTipiVisite(tipiVisita);
         boolean goOn = true;
         do {
+            System.out.printf("oggi è il: %d/%d/%d\n", LocalDate.now().getDayOfMonth(), LocalDate.now().getMonthValue(), LocalDate.now().getYear());
             MyMenu menu = new MyMenu("What do you want to do?\n", SELECT);
             int chosed = menu.scegli();
 
@@ -43,7 +47,11 @@ public class VisitManager {
                     showVisite();
                 } else if (chosed == 7) {
                     modifycaNumeroMaxPersonePerVisita();
-                }else if (chosed == 0) {
+                }else if (chosed == 8) {
+                    showCalendar();
+                }else if (chosed == 9) {
+                    //showVisitePerStato();
+                } else if (chosed == 0) {
                     goOn = false;
                 }
             } else
@@ -52,8 +60,6 @@ public class VisitManager {
     }
 
     public void addLuogo() {
-        //HashMap<String, List<String>> tipiVisita = new HashMap<String, List<String>>();
-        //HashMap<String, List<String>> volontari = new HashMap<String, List<String>>();
         String nome = InputDati.leggiStringaNonVuota("inserire il nome del luogo: ");
         String descrizione = InputDati.leggiStringaNonVuota("inserire una descrizione: ");
         String collocazioneGeografica = InputDati.leggiStringaNonVuota("dove è situato questo luogo? ");
@@ -84,7 +90,9 @@ public class VisitManager {
     }
 
     public void assegnaVisita() {
-        LocalDate data = LocalDate.now();
+      LocalDate data = LocalDate.of(2025, 3, 16);
+   // LocalDate data = LocalDate.now().getDayOfMonth();
+        if(data.getDayOfMonth() == 16){
         
         // Stampa l'elenco dei luoghi
         System.out.println("Elenco dei luoghi:");
@@ -106,25 +114,35 @@ public class VisitManager {
         Luogo luogo = luoghi.get(indiceLuogo);
         Volontario volontario = volontari.get(indiceVolontario);
 
-        // Aggiungere il luogo alla mappa se non esiste già
-        mappaVisite.putIfAbsent(luogo, new HashMap<>());
+        // Creare una nuova visita se non esiste già per il luogo
+        
+        //mappaVisiteLuogo.putIfAbsent(luogo, new Visite()); // Aggiungi questo riga per creare una nuova visita
 
-        // Aggiungere il tipo di visita alla mappa se non esiste già
-        mappaVisite.get(luogo).putIfAbsent(tipoVisita, new ArrayList<>());
+        // Aggiungere il tipo di visita e il volontario alla visita del luogo
+        Visite visita = mappaVisiteLuogo.get(luogo);
+        //visita.aggiungiVisita(tipoVisita, volontario); // Decommenta e usa questa riga
 
-        // Aggiungere il volontario alla lista dei volontari per il tipo di visita
-        mappaVisite.get(luogo).get(tipoVisita).add(volontario.getNome() + " (" + volontario.getEmail() + ")");
-
-        Utilita.stampaVisite(mappaVisite);
+        Utilita.stampaVisite(mappaVisiteLuogo);
+        } else {
+            System.out.println("mi dispiace ma questa azione è consentita solo il 16 di ogni mese\n");        
+        }
     }
+
     public void showVisite() {
-        Utilita.stampaVisite(mappaVisite);
+        Utilita.stampaVisite(mappaVisiteLuogo);
     }
 
     public void modifycaNumeroMaxPersonePerVisita() {
-        tipiVisita.forEach(visita -> {
-            visita.setMaxPersonePerVisita(InputDati.leggiIntero("Inserisci il numero massimo di persone per visita: ", 2, 10));
-        });
+       int numeroMax = InputDati.leggiInteroConMinimo("Inserisci il numero massimo di persone per visita: ", 2);
+        for(int i = 0; i < tipiVisita.size(); i++){
+            tipiVisita.get(i).setMaxPersonePerVisita(numeroMax);
+        }
+    }
+
+    public void showCalendar(){
+        Calendar.creaCalendario(LocalDate.now().getYear(), LocalDate.now().getMonthValue());
+        System.out.printf("oggi è il: %d/%d/%d", LocalDate.now().getDayOfMonth(), LocalDate.now().getMonthValue(), LocalDate.now().getYear());
+        System.out.println();
     }
 
     public boolean autenticaConfiguratore() {
