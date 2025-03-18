@@ -1,8 +1,9 @@
 package src.it.unibs.ingsw.gestvisit;
 import it.unibs.fp.libjava.*;
 import java.util.*;
-class Luogo {
 
+class Luogo {
+    
     private String nome;
     private String descrizione;
     private String collocazioneGeografica;
@@ -34,7 +35,7 @@ class Luogo {
         tipiVisita.add(tipo);
     } */
 
-/*    public void assegnaVolontario(String volontario) {
+    /*public void assegnaVolontario(String volontario) {
         volontari.add(volontario);
     }*/
 

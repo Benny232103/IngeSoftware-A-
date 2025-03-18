@@ -13,78 +13,78 @@ import java.util.Scanner;
 import it.unibs.fp.libjava.InputDati;
 
 public class CredentialManager {
-    private List<Utente> utenti = new ArrayList<>();
-    public List<Volontario> volontari = new ArrayList<>();
+    // private List<Utente> utenti = new ArrayList<>();
+    // public List<Volontario> volontari = new ArrayList<>();
     private static final String CREDENZIALI_FILE_PATH_CONFIGURATORI_INIZ = "src/it/unibs/ingsw/gestvisit/credenzialiInizialiConf.txt";
     private static final String CREDENZIALI_FILE_PATH_CONFIG_PERS = "src/it/unibs/ingsw/gestvisit/credenzialiConfiguratoriPers.txt";
     private static final String CREDENZIALI_FILE_PATH_GENERALS = "src/it/unibs/ingsw/gestvisit/credenziali.txt";
 
-    public void aggiungiUtente(Utente utente) {
-        utenti.add(utente);
-    }
+    // public void aggiungiUtente(Utente utente) {
+    //     utenti.add(utente);
+    // }
 
-    public void salvaCredenziali() {
-        File file = new File(CREDENZIALI_FILE_PATH_GENERALS);
+    // public void salvaCredenziali() {
+    //     File file = new File(CREDENZIALI_FILE_PATH_GENERALS);
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, false))) {
-            for (Utente utente : utenti) {
-                String tipoUtente = "";
-                if (utente instanceof Configuratore) {
-                    tipoUtente = "Configuratore";
-                    Configuratore config = (Configuratore) utente;
-                    writer.write(tipoUtente + "," + config.getPassword() + "," + config.getEmail());
-                } else if (utente instanceof Volontario) {
-                    tipoUtente = "Volontario";
-                    Volontario vol = (Volontario) utente;
-                    writer.write(tipoUtente + "," + vol.getPassword() + "," + vol.getEmail());
-                } else {
-                    tipoUtente = "UtentePubblico";
-                }
-            }
-            System.out.println("Credenziali salvate.");
-        } catch (IOException e) {
-            System.out.println("Errore durante la scrittura del file.");
-            e.printStackTrace();
-        }
-    }
+    //     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, false))) {
+    //         for (Utente utente : utenti) {
+    //             String tipoUtente = "";
+    //             if (utente instanceof Configuratore) {
+    //                 tipoUtente = "Configuratore";
+    //                 Configuratore config = (Configuratore) utente;
+    //                 writer.write(tipoUtente + "," + config.getPassword() + "," + config.getEmail());
+    //             } else if (utente instanceof Volontario) {
+    //                 tipoUtente = "Volontario";
+    //                 Volontario vol = (Volontario) utente;
+    //                 writer.write(tipoUtente + "," + vol.getPassword() + "," + vol.getEmail());
+    //             } else {
+    //                 tipoUtente = "UtentePubblico";
+    //             }
+    //         }
+    //         System.out.println("Credenziali salvate.");
+    //     } catch (IOException e) {
+    //         System.out.println("Errore durante la scrittura del file.");
+    //         e.printStackTrace();
+    //     }
+    // }
 
-    public void caricaCredenziali() {
-        File file = new File(CREDENZIALI_FILE_PATH_GENERALS);
+    // public void caricaCredenziali() {
+    //     File file = new File(CREDENZIALI_FILE_PATH_GENERALS);
 
-        try (Scanner scanner = new Scanner(file)) {
-            while (scanner.hasNextLine()) {
-                String[] credenziali = scanner.nextLine().split(",");
-                if (credenziali.length != 6) {
-                    System.out.println("Formato credenziali non valido: " + String.join(":", credenziali));
-                    continue;
-                }
-                String tipoUtente = credenziali[0];
-                String nome = credenziali[1];
-                String cognome = credenziali[2];
-                String email = credenziali[3];
-                String password = credenziali[4];
-                String tipiDiVisite = credenziali[5];
-                switch (tipoUtente) {
-                    case "Volontario":
-                        volontari.add(new Volontario(nome, cognome, email, password, tipiDiVisite));
-                        break;
-                    /* 
-                    case "Utente":
-                        utenti.add(new Utente(nome, cognome, nomeUtente, password));
-                        break;
-                    */
+    //     try (Scanner scanner = new Scanner(file)) {
+    //         while (scanner.hasNextLine()) {
+    //             String[] credenziali = scanner.nextLine().split(",");
+    //             if (credenziali.length != 6) {
+    //                 System.out.println("Formato credenziali non valido: " + String.join(":", credenziali));
+    //                 continue;
+    //             }
+    //             String tipoUtente = credenziali[0];
+    //             String nome = credenziali[1];
+    //             String cognome = credenziali[2];
+    //             String email = credenziali[3];
+    //             String password = credenziali[4];
+    //             String tipiDiVisite = credenziali[5];
+    //             switch (tipoUtente) {
+    //                 case "Volontario":
+    //                     volontari.add(new Volontario(nome, cognome, email, password, tipiDiVisite));
+    //                     break;
+                     
+    //                 case "Utente":
+    //                     utenti.add(new Utente(nome, cognome, nomeUtente, password));
+    //                     break;
                     
-                    default:
-                        System.out.println("Tipo utente non riconosciuto: " + tipoUtente);
-                        break;
-                }
-            }
-            System.out.println("Credenziali caricate.");
-        } catch (IOException e) {
-            System.out.println("Errore durante la lettura del file.");
-            e.printStackTrace();
-        }
-    }
+                    
+    //                 default:
+    //                     System.out.println("Tipo utente non riconosciuto: " + tipoUtente);
+    //                     break;
+    //             }
+    //         }
+    //         System.out.println("Credenziali caricate.");
+    //     } catch (IOException e) {
+    //         System.out.println("Errore durante la lettura del file.");
+    //         e.printStackTrace();
+    //     }
+    // }
 
     public void caricaCredenzialiConfiguratore(List<Configuratore> configuratori) {
         File file = new File(CREDENZIALI_FILE_PATH_CONFIG_PERS);
