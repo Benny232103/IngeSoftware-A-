@@ -7,6 +7,13 @@
             "name": "MainVisite",
             "request": "launch",
             "mainClass": "src.it.unibs.ingsw.gestvisit.MainVisite",
+            "projectName": "IngeSoftware-A-_67f0af65"
+        },
+        {
+            "type": "java",
+            "name": "MainVisite",
+            "request": "launch",
+            "mainClass": "src.it.unibs.ingsw.gestvisit.MainVisite",
             "projectName": "IngeSoftware-A-_677be5eb"
         },
         {
