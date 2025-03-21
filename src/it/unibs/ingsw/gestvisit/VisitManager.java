@@ -18,7 +18,10 @@ public class VisitManager {
     private HashMap<Luogo, Visite> mappaVisiteLuogo = new HashMap<>();
     private ArrayList<Visite> tipiVisita = new ArrayList<>();
     private boolean credenzialiModificate = false;
-
+    private static final String CREDENZIALI_FILE_PATH_CONFIGURATORI_INIZ = "src/it/unibs/ingsw/gestvisit/credenzialiInizialiConf.txt";
+    private static final String CREDENZIALI_FILE_PATH_CONFIG_PERS = "src/it/unibs/ingsw/gestvisit/credenzialiConfiguratoriPers.txt";
+    private static final String CREDENZIALI_FILE_PATH_GENERALS_VOL = "src/it/unibs/ingsw/gestvisit/credenzialiInizialiVol.txt";
+    private static final String CREDENZIALI_FILE_PATH_VOLONTARI = "src/it/unibs/ingsw/gestvisit/volontari.txt";
     /**
      * 
      */
@@ -162,14 +165,35 @@ public class VisitManager {
             return false;
         }
     }
+    public boolean autenticaVolontario(){
+        String nomeUtente = InputDati.leggiStringaNonVuota("Inserisci il nome utente (email): ");
+        String password = InputDati.leggiStringaNonVuota("Inserisci la password: ");
+        boolean[] esito = credentialManager.verificaCredenzialiVolontari(nomeUtente, password, volontari, temporaryCredentials);
+        if (esito[0]) {
+            if (esito[1]) {
+                modificaCredenzialiVolontario();
+            }
+            return true;
+        } else {
+            System.out.println("Credenziali non valide.");
+            return false;
+        }
+    }
 
     public void modificaCredenzialiConfiguratore() {
-        credentialManager.saveNewConfigCredential(configuratori);
+        credentialManager.saveNewConfigCredential(configuratori, CREDENZIALI_FILE_PATH_CONFIGURATORI_INIZ);
+    }
+    public void modificaCredenzialiVolontario(){
+        credentialManager.saveNewVolCredential(volontari, CREDENZIALI_FILE_PATH_VOLONTARI);
     }
 
     public void leggiCredenzialiConfiguratore() {
-        credentialManager.caricaCredenzialiTemporanee(temporaryCredentials);
-        credentialManager.caricaCredenzialiConfiguratore(configuratori);
+        credentialManager.caricaCredenzialiTemporanee(temporaryCredentials, CREDENZIALI_FILE_PATH_CONFIGURATORI_INIZ);
+        credentialManager.caricaCredenzialiConfiguratore(configuratori, CREDENZIALI_FILE_PATH_CONFIGURATORI_INIZ);
+    }
+    public void leggiCredenzialiVolontari(){
+        credentialManager.caricaCredenzialiTemporanee(temporaryCredentials, CREDENZIALI_FILE_PATH_VOLONTARI);
+        credentialManager.caricaCredenzialiVolontari(volontari, CREDENZIALI_FILE_PATH_VOLONTARI);
     }
 
     public boolean isCredenzialiModificate() {

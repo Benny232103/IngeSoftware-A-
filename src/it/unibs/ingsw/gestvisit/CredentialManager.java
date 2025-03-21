@@ -13,12 +13,13 @@ import java.util.Scanner;
 import it.unibs.fp.mylib.InputDati;
 
 public class CredentialManager {
-    // private List<Utente> utenti = new ArrayList<>();
-    // public List<Volontario> volontari = new ArrayList<>();
     private static final String CREDENZIALI_FILE_PATH_CONFIGURATORI_INIZ = "src/it/unibs/ingsw/gestvisit/credenzialiInizialiConf.txt";
     private static final String CREDENZIALI_FILE_PATH_CONFIG_PERS = "src/it/unibs/ingsw/gestvisit/credenzialiConfiguratoriPers.txt";
     private static final String CREDENZIALI_FILE_PATH_GENERALS = "src/it/unibs/ingsw/gestvisit/credenziali.txt";
-
+    private static final String CREDENZIALI_FILE_PATH_VOLONTARI = "src/it/unibs/ingsw/gestvisit/volontari.txt";
+    // private List<Utente> utenti = new ArrayList<>();
+    // public List<Volontario> volontari = new ArrayList<>();
+  
     // public void aggiungiUtente(Utente utente) {
     //     utenti.add(utente);
     // }
@@ -86,11 +87,11 @@ public class CredentialManager {
     //     }
     // }
 
-    public void caricaCredenzialiConfiguratore(List<Configuratore> configuratori) {
-        File file = new File(CREDENZIALI_FILE_PATH_CONFIG_PERS);
+    public void caricaCredenzialiConfiguratore(List<Configuratore> configuratori, String credenzialiUtente) {
+        File file = new File(credenzialiUtente);
 
         if (!file.exists()) {
-            System.out.println("File " + CREDENZIALI_FILE_PATH_CONFIG_PERS + " non trovato.");
+            System.out.println("File " + credenzialiUtente + " non trovato.");
             System.out.println("Percorso assoluto: " + file.getAbsolutePath());
             return;
         }
@@ -113,12 +114,40 @@ public class CredentialManager {
             e.printStackTrace();
         }
     }
-
-    public void caricaCredenzialiTemporanee(List<TemporaryCredential> temporaryCredentials) {
-        File file = new File(CREDENZIALI_FILE_PATH_CONFIGURATORI_INIZ);
+    public void caricaCredenzialiVolontari(List<Volontario> volontari, String credenzialiUtente) {
+        File file = new File(credenzialiUtente);
 
         if (!file.exists()) {
-            System.out.println("File " + CREDENZIALI_FILE_PATH_CONFIGURATORI_INIZ + " non trovato.");
+            System.out.println("File " + credenzialiUtente + " non trovato.");
+            System.out.println("Percorso assoluto: " + file.getAbsolutePath());
+            return;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] credenziali = line.split(",");
+                if (credenziali.length == 6) {
+                    String nome = credenziali[1].trim();
+                    String cognome = credenziali[2].trim();
+                    String email = credenziali[3].trim();
+                    String password = credenziali[4].trim();
+                    String tipiDiVisita = credenziali[5].trim();
+                    Volontario volontario = new Volontario(nome, cognome, email, password, tipiDiVisita);
+                    volontari.add(volontario);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Errore durante la lettura del file.");
+            e.printStackTrace();
+        }
+    }
+
+    public void caricaCredenzialiTemporanee(List<TemporaryCredential> temporaryCredentials, String credenzialiUtente) {
+        File file = new File(credenzialiUtente);
+
+        if (!file.exists()) {
+            System.out.println("File " + credenzialiUtente + " non trovato.");
             System.out.println("Percorso assoluto: " + file.getAbsolutePath());
             return;
         }
@@ -127,10 +156,10 @@ public class CredentialManager {
             String line;
             boolean isTemporarySection = false;
             while ((line = reader.readLine()) != null) {
-                if (line.startsWith("Credenziali temporanee config:")) {
+                if (line.startsWith("Volontario")) {
                     isTemporarySection = true;
                     continue;
-                } else if (line.startsWith("Credenziali personali Configuratori:")) {
+                } else if (line.startsWith("Credenziali personali volontari:")) {
                     isTemporarySection = false;
                     continue;
                 }
@@ -150,7 +179,7 @@ public class CredentialManager {
         }
     }
     
-    public void saveNewConfigCredential(List<Configuratore> configuratori) {
+    public void saveNewConfigCredential(List<Configuratore> configuratori, String credenziali) {
         String newNomeUtente = InputDati.leggiStringaNonVuota("Inserisci il nuovo nome utente (email): ");
         String newPassword = InputDati.leggiStringaNonVuota("Inserisci la nuova password: ");
         String name = InputDati.leggiStringaNonVuota("Inserisci il nome: ");
@@ -162,8 +191,23 @@ public class CredentialManager {
         configuratore1.setNome(name);
         configuratore1.setCognome(surname);
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CREDENZIALI_FILE_PATH_CONFIG_PERS, true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(credenziali, true))) {
             writer.write("Configuratore," + configuratore1.getNome() + "," + configuratore1.getCognome() + "," + configuratore1.getEmail() + "," + configuratore1.getPassword());
+            writer.newLine();
+            System.out.println("Nuove credenziali salvate.");
+        } catch (IOException e) {
+            System.out.println("Errore durante la scrittura del file.");
+            e.printStackTrace();
+        }
+    }
+    public void saveNewVolCredential(List<Volontario> volontari, String credenziali) {
+        String newPassword = InputDati.leggiStringaNonVuota("Inserisci la nuova password: ");
+        
+        Volontario volontario = volontari.get(0); 
+        volontario.setPassword(newPassword);
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(credenziali, true))) {
+            writer.write("Configuratore," + volontario.getNome() + "," + volontario.getCognome() + "," + volontario.getEmail() + "," + volontario.getPassword());
             writer.newLine();
             System.out.println("Nuove credenziali salvate.");
         } catch (IOException e) {
@@ -185,6 +229,29 @@ public class CredentialManager {
 
         for (Configuratore configuratore : configuratori) {
             if (configuratore.getEmail().equals(username) && configuratore.getPassword().equals(password)) {
+                esito[0] = true; // Autenticato
+                esito[1] = false; // Credenziali personali
+                return esito;
+            }
+        }
+
+        esito[0] = false; // Non autenticato
+        esito[1] = false; // Non rilevante
+        return esito;
+    }
+    public boolean[] verificaCredenzialiVolontari(String username, String password, ArrayList<Volontario> volontari, ArrayList<TemporaryCredential> temporaryCredentials) {
+        boolean[] esito = new boolean[2]; // esito[0] = autenticato, esito[1] = credenzialiTemporanee
+
+        for (TemporaryCredential tempCred : temporaryCredentials) {
+            if (tempCred.getUsername().equals(username) && tempCred.getPassword().equals(password)) {
+                esito[0] = true; // Autenticato
+                esito[1] = true; // Credenziali temporanee
+                return esito;
+            }
+        }
+
+        for (Volontario volontario: volontari) {
+            if (volontario.getEmail().equals(username) && volontario.getPassword().equals(password)) {
                 esito[0] = true; // Autenticato
                 esito[1] = false; // Credenziali personali
                 return esito;
