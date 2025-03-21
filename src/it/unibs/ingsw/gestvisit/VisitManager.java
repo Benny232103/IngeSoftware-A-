@@ -1,9 +1,11 @@
 package src.it.unibs.ingsw.gestvisit;
 
-import it.unibs.fp.mylib.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
+
+import it.unibs.fp.mylib.InputDati;
+import it.unibs.fp.mylib.MyMenu;
 
 public class VisitManager {
 
@@ -16,7 +18,10 @@ public class VisitManager {
     private HashMap<Luogo, Visite> mappaVisiteLuogo = new HashMap<>();
     private ArrayList<Visite> tipiVisita = new ArrayList<>();
     private boolean credenzialiModificate = false;
-
+    private static final String CREDENZIALI_FILE_PATH_CONFIGURATORI_INIZ = "src/it/unibs/ingsw/gestvisit/credenzialiInizialiConf.txt";
+    private static final String CREDENZIALI_FILE_PATH_CONFIG_PERS = "src/it/unibs/ingsw/gestvisit/credenzialiConfiguratoriPers.txt";
+    private static final String CREDENZIALI_FILE_PATH_GENERALS_VOL = "src/it/unibs/ingsw/gestvisit/credenzialiInizialiVol.txt";
+    private static final String CREDENZIALI_FILE_PATH_VOLONTARI = "src/it/unibs/ingsw/gestvisit/volontari.txt";
     /**
      * 
      */
@@ -25,7 +30,7 @@ public class VisitManager {
         Utilita.popolaVolontari(volontari);
         //Utilita.creazioneTipiVisite(tipiVisita);
         boolean goOn = true;
-        do {
+        do { //ciao
             System.out.printf("oggi è il: %d/%d/%d\n", LocalDate.now().getDayOfMonth(), LocalDate.now().getMonthValue(), LocalDate.now().getYear());
             MyMenu menu = new MyMenu("What do you want to do?\n", SELECT);
             int chosed = menu.scegli();
@@ -160,14 +165,35 @@ public class VisitManager {
             return false;
         }
     }
+    public boolean autenticaVolontario(){
+        String nomeUtente = InputDati.leggiStringaNonVuota("Inserisci il nome utente (email): ");
+        String password = InputDati.leggiStringaNonVuota("Inserisci la password: ");
+        boolean[] esito = credentialManager.verificaCredenzialiVolontari(nomeUtente, password, volontari, temporaryCredentials);
+        if (esito[0]) {
+            if (esito[1]) {
+                modificaCredenzialiVolontario();
+            }
+            return true;
+        } else {
+            System.out.println("Credenziali non valide.");
+            return false;
+        }
+    }
 
     public void modificaCredenzialiConfiguratore() {
-        credentialManager.saveNewConfigCredential(configuratori);
+        credentialManager.saveNewConfigCredential(configuratori, CREDENZIALI_FILE_PATH_CONFIGURATORI_INIZ);
+    }
+    public void modificaCredenzialiVolontario(){
+        credentialManager.saveNewVolCredential(volontari, CREDENZIALI_FILE_PATH_VOLONTARI);
     }
 
     public void leggiCredenzialiConfiguratore() {
-        credentialManager.caricaCredenzialiTemporanee(temporaryCredentials);
-        credentialManager.caricaCredenzialiConfiguratore(configuratori);
+        credentialManager.caricaCredenzialiTemporanee(temporaryCredentials, CREDENZIALI_FILE_PATH_CONFIGURATORI_INIZ);
+        credentialManager.caricaCredenzialiConfiguratore(configuratori, CREDENZIALI_FILE_PATH_CONFIGURATORI_INIZ);
+    }
+    public void leggiCredenzialiVolontari(){
+        credentialManager.caricaCredenzialiTemporanee(temporaryCredentials, CREDENZIALI_FILE_PATH_GENERALS_VOL);
+        credentialManager.caricaCredenzialiVolontari(volontari, CREDENZIALI_FILE_PATH_VOLONTARI);
     }
 
     public boolean isCredenzialiModificate() {

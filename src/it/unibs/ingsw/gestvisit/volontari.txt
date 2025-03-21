@@ -1,2 +1,2 @@
-Mario,Rossi,mario.rossi@gmail.com,pass12,gruppi
-Luigi,Bianchi,luigi.bianchi@gmail.com,pass123,laboratori
+Volontario,Mario,Rossi,mario.rossi@gmail.com,pass12,gruppi
+Volontario,Luigi,Bianchi,luigi.bianchi@gmail.com,pass123,laboratori
