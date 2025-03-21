@@ -1,9 +1,11 @@
 package src.it.unibs.ingsw.gestvisit;
 
-import it.unibs.fp.mylib.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
+
+import it.unibs.fp.mylib.InputDati;
+import it.unibs.fp.mylib.MyMenu;
 
 public class VisitManager {
 
