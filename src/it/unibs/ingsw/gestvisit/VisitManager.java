@@ -50,7 +50,7 @@ public class VisitManager {
                 }else if (chosed == 8) {
                     showCalendar();
                 }else if (chosed == 9) {
-                    //showVisitePerStato();
+                    //showVisitePerStatoEModifica();
                 } else if (chosed == 0) {
                     goOn = false;
                 }
@@ -173,4 +173,5 @@ public class VisitManager {
     public boolean isCredenzialiModificate() {
         return credenzialiModificate;
     }
+    
 }

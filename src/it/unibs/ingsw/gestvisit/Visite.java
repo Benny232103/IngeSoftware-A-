@@ -156,13 +156,8 @@ class Visite {
         this.maxPersonePerVisita = 10; // Default value
     }
 
-    public void aggiungiVisita(String tipoVisita, Volontario volontario) {
-        visite.putIfAbsent(tipoVisita, new ArrayList<>());
-        visite.get(tipoVisita).add(volontario);
-    }
-
     public HashMap<String, List<Volontario>> getVisite() {
-        return visite;
+        return visite; 
     }
 
     public int getMaxPersonePerVisita() {
@@ -173,18 +168,7 @@ class Visite {
         this.maxPersonePerVisita = maxPersonePerVisita;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (String tipoVisita : visite.keySet()) {
-            sb.append("Tipo di visita: ").append(tipoVisita).append("\n");
-            for (Volontario volontario : visite.get(tipoVisita)) {
-                sb.append("  Volontario: ").append(volontario.getNome()).append(" (").append(volontario.getEmail()).append(")\n");
-            }
-        }
-        return sb.toString();
-    }
-
+    
     
 
 }
