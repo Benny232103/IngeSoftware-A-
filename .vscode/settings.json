@@ -1,9 +1,10 @@
 {
     "java.project.referencedLibraries": [
-        "c:\\Users\\rugge\\Downloads\\Phone Link\\mylib.jar"
+        "c:\\Users\\rugge\\Desktop\\mylib\\mylib.jar"
     ],
     "java.project.sourcePaths": [
         "."
     ],
     "java.dependency.packagePresentation": "hierarchical",
+     "java.jdt.ls.java.home": "C:/Program Files/Java/jdk-24"
 }

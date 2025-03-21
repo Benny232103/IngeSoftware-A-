@@ -1,6 +1,6 @@
 package src.it.unibs.ingsw.gestvisit;
 
-import it.unibs.fp.libjava.*;
+import it.unibs.fp.mylib.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;

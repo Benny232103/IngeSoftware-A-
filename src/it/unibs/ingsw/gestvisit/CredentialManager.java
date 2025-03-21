@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import it.unibs.fp.libjava.InputDati;
+import it.unibs.fp.mylib.InputDati;
 
 public class CredentialManager {
     // private List<Utente> utenti = new ArrayList<>();

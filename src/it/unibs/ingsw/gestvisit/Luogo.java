@@ -1,5 +1,5 @@
 package src.it.unibs.ingsw.gestvisit;
-import it.unibs.fp.libjava.*;
+import it.unibs.fp.mylib.*;
 import java.util.*;
 
 class Luogo {
