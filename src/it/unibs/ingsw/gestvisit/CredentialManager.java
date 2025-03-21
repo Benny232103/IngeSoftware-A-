@@ -128,10 +128,10 @@ public class CredentialManager {
             while ((line = reader.readLine()) != null) {
                 String[] credenziali = line.split(",");
                 if (credenziali.length == 6) {
-                    String nome = credenziali[1].trim();
-                    String cognome = credenziali[2].trim();
-                    String email = credenziali[3].trim();
-                    String password = credenziali[4].trim();
+                    String nome = credenziali[0].trim();
+                    String cognome = credenziali[1].trim();
+                    String email = credenziali[2].trim();
+                    String password = credenziali[3].trim();
                     String tipiDiVisita = credenziali[5].trim();
                     Volontario volontario = new Volontario(nome, cognome, email, password, tipiDiVisita);
                     volontari.add(volontario);

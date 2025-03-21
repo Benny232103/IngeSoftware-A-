@@ -192,7 +192,7 @@ public class VisitManager {
         credentialManager.caricaCredenzialiConfiguratore(configuratori, CREDENZIALI_FILE_PATH_CONFIGURATORI_INIZ);
     }
     public void leggiCredenzialiVolontari(){
-        credentialManager.caricaCredenzialiTemporanee(temporaryCredentials, CREDENZIALI_FILE_PATH_VOLONTARI);
+        credentialManager.caricaCredenzialiTemporanee(temporaryCredentials, CREDENZIALI_FILE_PATH_GENERALS_VOL);
         credentialManager.caricaCredenzialiVolontari(volontari, CREDENZIALI_FILE_PATH_VOLONTARI);
     }
 
