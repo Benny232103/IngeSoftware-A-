@@ -27,7 +27,7 @@ public class VisitManager {
         Utilita.popolaVolontari(volontari);
         //Utilita.creazioneTipiVisite(tipiVisita);
         boolean goOn = true;
-        do {
+        do { //ciao
             System.out.printf("oggi è il: %d/%d/%d\n", LocalDate.now().getDayOfMonth(), LocalDate.now().getMonthValue(), LocalDate.now().getYear());
             MyMenu menu = new MyMenu("What do you want to do?\n", SELECT);
             int chosed = menu.scegli();
